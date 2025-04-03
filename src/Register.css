@@ -1,0 +1,102 @@
+.app{
+    
+    background-image: url("/Users/rvaleev/Desktop/Service2/front/public/regback.jpeg");
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+
+.reg{
+    align-items: center;
+    width: 300px;
+    height: 400px;
+    background: #FFFFFF;
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+}
+
+.Login{
+font-family: 'Roboto';
+font-style: normal;
+font-size: 16px;
+line-height: 156%;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+
+}
+
+.inp1{
+    width: 216px;
+    height: 22px;    
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    /* identical to box height, or 157% */
+    display: flex;
+    align-items: center;
+    
+    /* #000000 (Black) */
+    color: #000000;
+}
+
+.Password{
+    width: 262px;
+    height: 45px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 16px;
+    line-height: 156%;
+    display: flex;
+    align-items: center;
+    
+
+    color: #000000;
+
+}
+
+.inp2{
+    width: 216px;
+    height: 22px;
+    left: 855px;
+    top: 425px;
+
+    align-items: center;
+    color: #000000;
+
+}
+
+
+
+.Zareg{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: black;
+    }
+
+.Autor{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: black;
+}
+
+h1{
+    height: 100px;
+    text-align: center;
+}
+
+
