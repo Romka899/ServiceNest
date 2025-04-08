@@ -1,4 +1,4 @@
-/* Основные стили */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,7 +6,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Фон страницы */
+
 body {
     margin: 0;
     background-color: #FAFBFF;
@@ -18,14 +18,19 @@ body {
     color: #333;
 }
 
-/* Контейнер приложения */
+
 .app-container {
+    background-color: #FAFBFF;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Стили для header */
+
 .app-header {
     background-color: white;
     color: black;
@@ -56,7 +61,7 @@ body {
     margin-right: 20px;
 }
 
-/* Основное содержимое */
+
 .content-container {
     max-width: 1200px;
     margin: 2rem auto;
@@ -74,7 +79,7 @@ body {
     font-size: 2rem;
 }
 
-/* Блоки настроек */
+
 .settings-block {
     background: #f8f9fa;
     border-radius: 8px;
@@ -92,7 +97,7 @@ body {
     font-size: 1.3rem;
 }
 
-/* Формы и элементы управления */
+
 .form-group {
     margin-bottom: 1.2rem;
 }
@@ -137,7 +142,7 @@ body {
     cursor: pointer;
 }
 
-/* Загрузка изображений */
+
 .image-upload-container {
     margin-bottom: 1.5rem;
 }
@@ -202,7 +207,7 @@ body {
     background: #c82333;
 }
 
-/* Кнопки действий */
+
 .action-buttons {
     display: flex;
     justify-content: space-between;
@@ -239,7 +244,7 @@ body {
     background: #5a6268;
 }
 
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .content-container {
         padding: 1rem;

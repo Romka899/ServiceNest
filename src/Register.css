@@ -1,102 +1,153 @@
 .app{
     
-    background-image: url("/Users/rvaleev/Desktop/Service2/front/public/regback.jpeg");
+    background-image: url("https://s3-alpha-sig.figma.com/img/41ad/0aca/de5685a616141bbc8b0ed8de01992809?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=M3JQ~e9eCOXvr9gdS2fAS87w608e-MsA7Xa79FrBcIvNMpdZO5he8OdYmOnhvOoHdFkJ3eX5KXVbO9MI8UqEH6DvtNEb66aqzLc9-lEDN9xBbXNZtIlOqI9mB3SFJnwSTDGLrjSp2z9nZNS3U1g1dAkgQM62Bsj9c1qXNS-4IMw~ZFS-THSkvtOfkK640vv5qGYj32vRHG51UGDilfjghXYR0ekofk7qJpIgW-6lM9JvtMUsxls9Yb-8KFAtrgtuKRiJzxwmKusi31eY0TfsWJBaeIU2wVUKFGG0FiQi0xrAAZNp-t0jstXSBUEV0EAHtqY2EbwR~tSAYbhAte9QSg__");
     background-size: cover; 
     background-repeat: no-repeat; 
     background-position: center;
-    width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 
 .reg{
+    display: flex;
     align-items: center;
-    width: 300px;
-    height: 400px;
-    background: #FFFFFF;
+    width: 1440px;
+    height: 880px;
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.08);
     border-radius: 4px;
 }
 
+
+.reg-left{
+    background: #FFFFFF;
+    width: 640px;
+    height: 880px;
+}
+
+.reg-right{
+    position: relative;
+    width: 800px;
+    height: 880px;
+    overflow: hidden;
+}
+
+.reg-right::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://s3-alpha-sig.figma.com/img/c171/479b/555115e74d039faa6d7002ba7751523c?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VLX1bIRVDT-gJxjxYCII4piOr~GqGLoDmMdBUeAXaXg2DUvJ0BonyejNpPs1kOv1FDQEkDfmrfCA-2i7mjhp4nE6USbJoBAMT18WblqQSIya21jOzr~rGs2Tl4Tw0s570z7XDhlnPHp3I3Zk1h13gv2NiAo9bdrQgHC7O6C63lOpmkxs~DaoWmW8c73ldHYwztPi0MpMgIag1kq2DTU-BIuvgJkcuJ-dXVhRFGiZVC7CMVq8xsARUvlTVFCaWgxR~qCHDlg-Gdhkpe7T7rV1rQlW5yONgWeZBRCBEW6OYHtOxk57~4m4y8uGKIIy0uD-n-3quXUnDxh-RPkeHqZ0RQ__") center/cover no-repeat;
+    transform: scale(-1, -1);
+}
+
+.zagolovok{
+
+    max-width: 360px;
+    min-height: 72px;
+    margin-top: 167px;
+    margin-left: 140px;
+    font-family: SF Pro Display;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: 0.2px;
+    text-align: center;
+
+    
+}
+
 .Login{
-font-family: 'Roboto';
-font-style: normal;
-font-size: 16px;
-line-height: 156%;
-display: flex;
-align-items: center;
-text-align: center;
+    min-width: 360px;
+    min-height: 75px;
+    font-family: 'Roboto';
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 140px;
+    margin-top: 30px;
+}
 
-color: #000000;
-
-
+.log{
+    margin-right: auto;
+    font-family: SF Pro Display;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0px;
 }
 
 .inp1{
-    width: 216px;
-    height: 22px;    
+    margin-right: auto;
+    display: block;
+    min-width: 360px;
+    min-height: 48px;    
     font-family: 'Roboto';
     font-style: normal;
     font-size: 14px;
     line-height: 22px;
-    /* identical to box height, or 157% */
-    display: flex;
-    align-items: center;
-    
-    /* #000000 (Black) */
     color: #000000;
 }
 
 .Password{
-    width: 262px;
-    height: 45px;
-
+    min-width: 360px;
+    min-height: 75px;
     font-family: 'Roboto';
     font-style: normal;
-    font-size: 16px;
-    line-height: 156%;
     display: flex;
-    align-items: center;
-    
+    flex-direction: column;
+    gap: 8px;
+    margin-left: 140px;
+    margin-top: 30px;
+}
 
-    color: #000000;
-
+.pass{
+    margin-right: auto;
+    font-family: SF Pro Display;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 120%;
+    letter-spacing: 0px;
 }
 
 .inp2{
-    width: 216px;
-    height: 22px;
-    left: 855px;
-    top: 425px;
-
-    align-items: center;
+    margin-right: auto;
+    display: block;
+    min-width: 360px;
+    min-height: 48px;    
+    font-family: 'Roboto';
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
     color: #000000;
 
 }
 
-
-
 .Zareg{
-    font-family: 'Roboto';
-    font-style: normal;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
-    color: black;
+    max-width: 360px;
+    min-height: 75px;
+    margin-top: 30px;
+    margin-left: 140px;
     }
 
-.Autor{
-    font-family: 'Roboto';
-    font-style: normal;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
-    color: black;
+.btnzar{
+    min-width: 112px;
+    min-height: 56px;
+    margin-right: 70px;
 }
 
-h1{
-    height: 100px;
-    text-align: center;
+.btnauth{
+    min-width: 112px;
+    min-height: 56px;
 }
+
+.copyright{
+    text-align: center;
+    margin-top: 250px;
+}
+
+
 
 

@@ -32,11 +32,12 @@ const Register: React.FC = () => {
 
     return (
         <div className="reg">
-            <h1>Регистрация</h1>
+            <div className='reg-left'>
+            <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleRegister}>
                 <div className='Login'>
-                    <label>Login</label>
+                    <label className='log'>Введите номер телефона</label>
                     <input 
                         className='inp1' 
                         type="text" 
@@ -46,7 +47,7 @@ const Register: React.FC = () => {
                     />
                 </div>
                 <div className='Password'>
-                    <label>Password</label>
+                    <label className='pass'>Пароль</label>
                     <input 
                         className='inp2' 
                         type="password" 
@@ -56,20 +57,24 @@ const Register: React.FC = () => {
                     />
                 </div>
                 <div className='Zareg'>
-                    <button type="submit">
+                    <button className='btnzar' type="submit">
                         Зарегистрироваться
                     </button>
-                </div>
-                <div className='Autor'>
-                    <button 
+                    <button className='btnauth'
                         type="button" 
                         onClick={handleLoginRedirect} 
-                        style={{ marginTop: '20px' }}
                     >
                         Авторизация
                     </button>
                 </div>
+                <div className='copyright'>
+                    Копирайт © 2025 ООО «Компас Плюс»
+                </div>
             </form>
+            </div>
+            <div className='reg-right'>
+                
+            </div>
         </div>
     );
 }
