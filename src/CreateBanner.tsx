@@ -1,57 +1,34 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import axios, { AxiosError } from 'axios';
+import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./CreateBanner.css"
-
-interface BannerResponse {
-    rulesUrl?: string;
-    [key: string]: any;
-}
+import "./CreateBanner.css";
 
 const CreateBanner: React.FC = () => {
-    const [text, setText] = useState<string>('');
-    const [width, setWidth] = useState<number>(600);
-    const [height, setHeight] = useState<number>(400);
-    const [image, setImage] = useState<File | null>(null);
-    const [bannerUrl, setBannerUrl] = useState<string | null>(null); 
-    const [rulesUrl, setRulesUrl] = useState<string | null>(null);
-    const [textX, setTextX] = useState<number>(width/2); 
-    const [textY, setTextY] = useState<number>(height/2); 
     const navigate = useNavigate();
+    
+    const [placement, setPlacement] = useState<string>('');
+    const [app, setApp] = useState<string>('');
+    const [hideable, setHideable] = useState<boolean>(false);
+    
+    const [images, setImages] = useState<File[]>([]);
+    const [link, setLink] = useState<string>('');
+ 
+    const [period, setPeriod] = useState<string>('');
+    const [impressions, setImpressions] = useState<string>('');
+    const [userImpressions, setUserImpressions] = useState<string>('');
+    const [showTime, setShowTime] = useState<string>('');
+    const [geoTargeting, setGeoTargeting] = useState<string>('');
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setImage(e.target.files[0]);
+    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && images.length < 5) {
+            const newImages = Array.from(e.target.files).slice(0, 5 - images.length);
+            setImages([...images, ...newImages]);
         }
     };
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-
-        if (!image) {
-            alert('Пожалуйста, выберите изображение');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('text', text);
-        formData.append('width', width.toString());
-        formData.append('height', height.toString());
-        formData.append('image', image);
-        formData.append('textX', textX.toString()); 
-        formData.append('textY', textY.toString()); 
-
-        try {
-            const response = await axios.post('http://localhost:3000/api/create-banner', formData, {
-                responseType: 'blob',
-            });
-            const bannerUrl = URL.createObjectURL(response.data);
-            setBannerUrl(bannerUrl);
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            console.error('Ошибка при создании баннера:', axiosError);
-            alert('Ошибка при создании баннера');
-        }
+    const removeImage = (index: number) => {
+        const newImages = [...images];
+        newImages.splice(index, 1);
+        setImages(newImages);
     };
 
     const handleLoginRedirect = () => {
@@ -60,130 +37,196 @@ const CreateBanner: React.FC = () => {
         navigate('/'); 
     };
 
-    const handleSaveBanner = async () => {
-        if (!image) {
-            alert('Пожалуйста, создайте баннер перед сохранением');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('text', text);
-        formData.append('width', width.toString());
-        formData.append('height', height.toString());
-        formData.append('image', image);
-        formData.append('textX', textX.toString());
-        formData.append('textY', textY.toString());
-
-        try {
-            const response = await axios.post<BannerResponse>('http://localhost:3000/api/save-banner', formData);
-            alert('Баннер успешно сохранен!');
-            if (response.data.rulesUrl) {
-                setRulesUrl(response.data.rulesUrl);
-            }
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            console.error('Ошибка при сохранении баннера:', axiosError);
-            alert('Ошибка при сохранении баннера');
-        }
-    };
-
-    const handleNumberChange = (
-        e: ChangeEvent<HTMLInputElement>, 
-        setter: React.Dispatch<React.SetStateAction<number>>
-    ) => {
-        const value = parseInt(e.target.value);
-        if (!isNaN(value)) {
-            setter(value);
-        }
+    const Header = () => {
+        return (
+            <header className="app-header">
+                <div className="header-content">
+                    <h1 >Рекламная платформа</h1>
+                    <div className="user-info">
+                        <span>{localStorage.getItem('username') || 'Пользователь'}</span>
+                    </div>
+                </div>
+            </header>
+        );
     };
 
     return (
-        <div className="banner">
-            <h1>Создание рекламного баннера</h1>
-            <form onSubmit={handleSubmit}>
-                <div className='inp3'>
-                    <label className='lab'>Текст:</label>
-                    <textarea
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        rows={1}
-                        placeholder="Введите текст..."
-                    />
-                </div>
-                <div className='inp3'>
-                    <label>Координата X текста:</label>
-                    <input 
-                        type="number" 
-                        value={textX} 
-                        onChange={(e) => handleNumberChange(e, setTextX)} 
-                    />
-                </div>
-                <div className='inp3'>
-                    <label>Координата Y текста:</label>
-                    <input 
-                        type="number" 
-                        value={textY} 
-                        onChange={(e) => handleNumberChange(e, setTextY)} 
-                    />
-                </div>
-                <div className='inp3'>
-                    <label className='lab'>Ширина:</label>
-                    <input 
-                        type="number" 
-                        value={width} 
-                        onChange={(e) => handleNumberChange(e, setWidth)} 
-                    />
-                </div>
-                <div className='inp3'>
-                    <label className='lab'>Высота:</label>
-                    <input 
-                        type="number" 
-                        value={height} 
-                        onChange={(e) => handleNumberChange(e, setHeight)} 
-                    />
-                </div>
-                <div>
-                    <label>Изображение:</label>
-                    <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageChange} 
-                        required
-                    />
-                </div>
-                <button type="submit">Создать баннер</button>
-            </form>
+        <div className="app-container">
+            <Header />
             
-            {bannerUrl && (
-                <div className='createbanner'>
-                    <h2>Ваш баннер:</h2>
-                    <img src={bannerUrl} alt="Рекламный баннер" />
+            <div className="content-container">
+                <h1 className="page-title">Добавление рекламных объектов</h1>
+                <div className="settings-block">
+                    <h2>Детали размещения</h2>
+                    
+                    <div className="form-group">
+                        <label>Место показа:</label>
+                        <select 
+                            value={placement} 
+                            onChange={(e) => setPlacement(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите место</option>
+                            <option value="top">Верх страницы</option>
+                            <option value="middle">Середина страницы</option>
+                            <option value="bottom">Низ страницы</option>
+                        </select>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>Приложение для показа:</label>
+                        <select 
+                            value={app} 
+                            onChange={(e) => setApp(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите приложение</option>
+                            <option value="app1">Приложение 1</option>
+                            <option value="app2">Приложение 2</option>
+                        </select>
+                    </div>
+                    
+                    <div className="form-group checkbox-group">
+                        <input
+                            type="checkbox"
+                            id="hideable"
+                            checked={hideable}
+                            onChange={(e) => setHideable(e.target.checked)}
+                        />
+                        <label htmlFor="hideable">Скрывать баннер</label>
+                    </div>
+                </div>
+                <div className="settings-block">
+                    <h2>Загрузка изображений</h2>
+                    
+                    <div className="image-upload-container">
+                        {images.length < 5 && (
+                            <label className="upload-btn">
+                                Добавить изображение
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    style={{ display: 'none' }}
+                                    multiple
+                                />
+                            </label>
+                        )}
+                        
+                        <div className="image-preview-container">
+                            {images.map((image, index) => (
+                                <div key={index} className="image-preview">
+                                    <img 
+                                        src={URL.createObjectURL(image)} 
+                                        alt={`Превью ${index + 1}`} 
+                                    />
+                                    <button 
+                                        onClick={() => removeImage(index)}
+                                        className="remove-image-btn"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>Ссылка:</label>
+                        <input
+                            type="text"
+                            value={link}
+                            onChange={(e) => setLink(e.target.value)}
+                            placeholder="Введите ссылку"
+                            className="form-control"
+                        />
+                    </div>
+                </div>
+                <div className="settings-block">
+                    <h2>Дополнительные настройки</h2>
+                    
+                    <div className="form-group">
+                        <label>Период публикации:</label>
+                        <select 
+                            value={period} 
+                            onChange={(e) => setPeriod(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите период</option>
+                            <option value="1week">1 неделя</option>
+                            <option value="2weeks">2 недели</option>
+                            <option value="1month">1 месяц</option>
+                        </select>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>Количество показов:</label>
+                        <select 
+                            value={impressions} 
+                            onChange={(e) => setImpressions(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите количество</option>
+                            <option value="1000">1,000</option>
+                            <option value="5000">5,000</option>
+                            <option value="10000">10,000</option>
+                        </select>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>Количество показов пользователю:</label>
+                        <select 
+                            value={userImpressions} 
+                            onChange={(e) => setUserImpressions(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите количество</option>
+                            <option value="1">1</option>
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>Время показа:</label>
+                        <select 
+                            value={showTime} 
+                            onChange={(e) => setShowTime(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите время</option>
+                            <option value="day">Только днем</option>
+                            <option value="night">Только ночью</option>
+                            <option value="all">Круглосуточно</option>
+                        </select>
+                    </div>
+                    
+                    <div className="form-group">
+                        <label>Геотаргетинг:</label>
+                        <select 
+                            value={geoTargeting} 
+                            onChange={(e) => setGeoTargeting(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите регион</option>
+                            <option value="all">Все регионы</option>
+                            <option value="europe">Европа</option>
+                            <option value="asia">Азия</option>
+                            <option value="america">Америка</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div className="action-buttons">
+                    <button className="submit-btn">Сохранить</button>
                     <button 
-                        onClick={handleSaveBanner} 
-                        style={{ marginTop: '10px' }}
+                        onClick={handleLoginRedirect} 
+                        className="logout-btn"
                     >
-                        Загрузить баннер
+                        Выйти
                     </button>
                 </div>
-            )}
-            
-            {rulesUrl && (
-                <div className='createbanner'>
-                    <h2>Ссылка на JSON-файл:</h2>
-                    <p>
-                        <a href={rulesUrl} target="_blank" rel="noopener noreferrer">
-                            {rulesUrl}
-                        </a>
-                    </p>
-                </div>
-            )}
-            
-            <button 
-                onClick={handleLoginRedirect} 
-                style={{ marginTop: '20px' }}
-            >
-                Выйти
-            </button>
+            </div>
         </div>
     );
 }

@@ -1,54 +1,266 @@
-.banner{
+/* Основные стили */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Фон страницы */
+body {
+    margin: 0;
+    background-color: #FAFBFF;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Контейнер приложения */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Стили для header */
+.app-header {
     background-color: white;
-    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.08);
+    color: black;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    top: 0;
+    z-index: 100;
+    width: 100vw;
+}
+
+.header-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    margin-right: 20px;
+}
+
+/* Основное содержимое */
+.content-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+    font-size: 2rem;
+}
+
+/* Блоки настроек */
+.settings-block {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.settings-block h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+/* Формы и элементы управления */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ced4da;
     border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.15s;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.checkbox-group {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.checkbox-group input {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+/* Загрузка изображений */
+.image-upload-container {
+    margin-bottom: 1.5rem;
+}
+
+.upload-btn {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+}
+
+.upload-btn:hover {
+    background: #218838;
+}
+
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 1rem;
+}
+
+.image-preview {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    background-size: cover; 
-    
+    transition: background-color 0.2s;
 }
 
-.createbanner{
+.remove-image-btn:hover {
+    background: #c82333;
+}
+
+/* Кнопки действий */
+.action-buttons {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
 }
 
-.lab{
-        width: 140px;
-        height: 20px;
-
-        font-family: 'Roboto';
-        font-style: normal;
-        font-size: 16px;
-        line-height: 156%;
-        /* or 19px */
-        display: flex;
-        align-items: center;
-
-        /* #000000 (Black) */
-        color: #000000;
+.submit-btn {
+    background: #007bff;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
 }
 
-.inp3{
-    width: 270px;
-    height: 35px;
+.submit-btn:hover {
+    background: #0069d9;
+}
 
-    font-family: 'Roboto';
-    font-style: normal;
-    font-size: 16px;
-    line-height: 22px;
+.logout-btn {
+    background: #6c757d;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
 
-    display: flex;
-    align-items: center;
+.logout-btn:hover {
+    background: #5a6268;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .content-container {
+        padding: 1rem;
+        margin: 1rem;
+    }
     
-    color: #000000;
-
-}
-
-.textarea{
-    width: 300px;
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    .image-preview {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .submit-btn, .logout-btn {
+        width: 100%;
+    }
 }
