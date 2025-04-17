@@ -125,6 +125,25 @@
 
 }
 
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    margin-top: 16px; 
+    margin-left: 140px;
+  }
+  
+  .checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  
+  label {
+    cursor: pointer;
+    user-select: none;
+  }
+
 .Zareg{
     max-width: 360px;
     min-height: 75px;

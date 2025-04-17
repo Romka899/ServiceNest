@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from './api';
 import "./Register.css"
+import logo from "./img/logocomp.png"
 
 const Register: React.FC = () => {
     const [username, setUsername] = useState<string>('');
@@ -19,6 +20,7 @@ const Register: React.FC = () => {
                 password,
             });
             alert(response.data);
+            localStorage.setItem('username', username);
             navigate('/create-banner');
         } catch (error) {
             setError('Ошибка при регистрации. Пожалуйста, попробуйте снова.');
@@ -30,9 +32,18 @@ const Register: React.FC = () => {
         navigate('/autorisation');
     };
 
+    const Header = () => {
+        return (
+            <div className="logo" >
+                <img src = {logo} alt=""/>
+            </div>
+        );
+    };
+
     return (
         <div className="reg">
-            <div className='reg-left'>
+            <div className='block-left'>
+            <Header/>
             <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleRegister}>
@@ -56,6 +67,10 @@ const Register: React.FC = () => {
                         required
                     />
                 </div>
+                <div className="remember-me">
+                    <input className="checkbox" type="checkbox" id="remember" />
+                    <label>Запомнить логин</label>
+                </div>
                 <div className='Zareg'>
                     <button className='btnzar' type="submit">
                         Зарегистрироваться
@@ -72,7 +87,7 @@ const Register: React.FC = () => {
                 </div>
             </form>
             </div>
-            <div className='reg-right'>
+            <div className='block-right'>
                 
             </div>
         </div>
