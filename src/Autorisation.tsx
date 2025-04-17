@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "./Autorisation.css"
+import logo from "./img/logocomp.png"
 
 const Autorisation: React.FC = () => {
     const [username, setUsername] = useState<string>('');
@@ -32,29 +33,61 @@ const Autorisation: React.FC = () => {
         }
     };
 
+    const handleRegistrRedirect = () => {
+        navigate('/');
+    };
+
+    const Header = () => {
+        return (
+            <div className="logo">
+                <img src = {logo} alt=""/>
+            </div>
+        );
+    };
+
     return (
-        <div className="login">
-            <h1>Авторизация</h1>
+        <div className="reg">
+            <div className='block-left'>
+            <Header/>
+            <h1 className='zagolovok'>Авторизация</h1>
             <form onSubmit={handleLogin}>
-                <div>
-                    <label>Имя пользователя:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                <div className='Login'>
+                    <label className='log'>Номер телефона пользователя:</label>
+                    <input 
+                        className='inp1' 
+                        type="text" 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        required
                     />
                 </div>
-                <div>
-                    <label>Пароль:</label>
+                <div className='Password'>
+                    <label className='pass'>Пароль:</label>
                     <input
+                        className='inp2'
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
                     />
                 </div>
-                <button type="submit">Войти</button>
+                <div className='EmptyHeight'>
+                </div>
+                <div className='Zareg'>
+                    <button className='btnauth' type="submit">Войти</button>
+                    <button className='btnzar' type='button' onClick={handleRegistrRedirect} >Зарегистрироваться</button>
+                </div>
+                    {error && <div className='Error' style={{color: 'red' }}>{error}</div>}
+
+                <div className='copyright'>
+                    Копирайт © 2025 ООО «Компас Плюс»
+                </div>
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+
+            </div>
+            <div className='block-right'>
+                
+            </div>
         </div>
     );
 }
