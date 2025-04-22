@@ -40,34 +40,37 @@ const CreateBanner: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
-            const formData = {
-                placement,
-                app,
-                hideable,
-                link,
-                period,
-                impressions,
-                userImpressions,
-                showTime,
-                geoTargeting,
-                imageCount: images.length,
-                username: localStorage.getItem('username') || 'unknown',
-                timestamp: new Date().toISOString()
-            };
+            const formData = new FormData();
+            
+            formData.append('placement', placement);
+            formData.append('app', app);
+            formData.append('hideable', String(hideable));
+            formData.append('link', link);
+            formData.append('period', period);
+            formData.append('impressions', impressions);
+            formData.append('userImpressions', userImpressions);
+            formData.append('showTime', showTime);
+            formData.append('geoTargeting', geoTargeting);
+            formData.append('username', localStorage.getItem('username') || 'unknown');
+            
+
+            images.forEach((image) => {
+                formData.append('images', image);
+            });
     
             const response = await fetch('http://localhost:3000/api/save-banner', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
+                body: formData,
             });
     
             if (!response.ok) {
-                throw new Error('Ошибка при сохранении данных');
+                const errorData = await response.json();
+                throw new Error( errorData.massage ||'Ошибка при сохранении данных');
             }
     
-            alert('Настройки успешно сохранены!');
+            const result = await response.json();
+            alert('Настройки и изображения успешно сохранены!');
+            console.log('Сервер вернул:', result);
         } catch (error) {
             console.error('Ошибка:', error);
             alert('Произошла ошибка при сохранении');
@@ -78,7 +81,7 @@ const CreateBanner: React.FC = () => {
         return (
             <header className="app-header">
                 <div className="header-content">
-                    <div className='logo'>
+                    <div className='head-logo'>
                         <img src = {logo} alt=""/>
                     </div>
                     <h1 >Рекламная платформа</h1>

@@ -42,50 +42,53 @@ const Register: React.FC = () => {
 
     return (
         <div className="reg">
-            <div className='block-left'>
-            <Header/>
-            <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleRegister}>
-                <div className='Login'>
-                    <label className='log'>Введите номер телефона</label>
-                    <input 
-                        className='inp1' 
-                        type="text" 
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)} 
-                        required
-                    />
+            <div className='block-left-content'>
+                <div className='block-left'>
+                <Header/>
+                <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <form onSubmit={handleRegister}>
+                    <div className='Login'>
+                        <label className='log'>Введите номер телефона</label>
+                        <input 
+                            className='inp1' 
+                            type="text" 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)} 
+                            required
+                        />
+                    </div>
+                    <div className='Password'>
+                        <label className='pass'>Пароль</label>
+                        <input 
+                            className='inp2' 
+                            type="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required
+                        />
+                    </div>
+                    <div className="remember-me">
+                        <input className="checkbox" type="checkbox" id="remember" />
+                        <label>Запомнить логин</label>
+                    </div>
+                    <div className='Zareg'>
+                        <button className='btnzar' 
+                            type="submit">
+                            Войти
+                        </button>
+                        <button className='btnauth'
+                            type="button" 
+                            onClick={handleLoginRedirect} 
+                        >
+                            Авторизация
+                        </button>
+                    </div>
+                    <div className='copyright'>
+                        Копирайт © 2025 ООО «Компас Плюс»
+                    </div>
+                </form>
                 </div>
-                <div className='Password'>
-                    <label className='pass'>Пароль</label>
-                    <input 
-                        className='inp2' 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required
-                    />
-                </div>
-                <div className="remember-me">
-                    <input className="checkbox" type="checkbox" id="remember" />
-                    <label>Запомнить логин</label>
-                </div>
-                <div className='Zareg'>
-                    <button className='btnzar' type="submit">
-                        Зарегистрироваться
-                    </button>
-                    <button className='btnauth'
-                        type="button" 
-                        onClick={handleLoginRedirect} 
-                    >
-                        Авторизация
-                    </button>
-                </div>
-                <div className='copyright'>
-                    Копирайт © 2025 ООО «Компас Плюс»
-                </div>
-            </form>
             </div>
             <div className='block-right'>
                 

@@ -1,8 +1,7 @@
 .app {
-    background-image: url("https://s3-alpha-sig.figma.com/img/41ad/0aca/de5685a616141bbc8b0ed8de01992809?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=M3JQ~e9eCOXvr9gdS2fAS87w608e-MsA7Xa79FrBcIvNMpdZO5he8OdYmOnhvOoHdFkJ3eX5KXVbO9MI8UqEH6DvtNEb66aqzLc9-lEDN9xBbXNZtIlOqI9mB3SFJnwSTDGLrjSp2z9nZNS3U1g1dAkgQM62Bsj9c1qXNS-4IMw~ZFS-THSkvtOfkK640vv5qGYj32vRHG51UGDilfjghXYR0ekofk7qJpIgW-6lM9JvtMUsxls9Yb-8KFAtrgtuKRiJzxwmKusi31eY0TfsWJBaeIU2wVUKFGG0FiQi0xrAAZNp-t0jstXSBUEV0EAHtqY2EbwR~tSAYbhAte9QSg__");
+    background-image: url("https://s3-alpha-sig.figma.com/img/41ad/0aca/de5685a616141bbc8b0ed8de01992809?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=uEJxRdMoND7wlGmufYCbxFh2PFHxl1Qb9Sb5uXcb9MQFcKUnf7h5L-kj5Omc8-tGtPKpRXzIC6LFF4yLPOpQIs65T20uqk8bXnCH26vK930rIR7bUZQrypFEpgIlfblJyCa1z9-ItDpfE5M~baQciWwG1FQoR9PKKM1zPHYqc8-InywS2hQZaZPjWeL0d11IeZs8LJAd25zd9yfCotGEGLxIp-dpN6Lw6wYRyU9DUnKzPY80HlI2MItulkaYhAtniEYB6e~Rn44P1AsoxwWfBdHNj~rWAMdJbsErP2ZpbT7w1r~0tAWrKKCqoYNOmNodo8azM~cR0dNikTVgpIMl0A__");
     background-size: cover;
     background-repeat: no-repeat;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,40 +10,43 @@
 .logo {
     max-width: 88px;
     max-height: 40px;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    margin-top: 32px;
     margin-left: 40px;
 }
 
 
 .reg {
+    position: absolute;
     display: flex;
     width: 100%;
     max-width: 1440px;
     min-height: 880px;
-    margin: 0 auto;
+    margin-top: 80px;
     box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.08);
     border-radius: 4px;
-    
+    bottom: 0;
 }
 
 .block-left, .block-right {
     min-height: 880px;
     display: flex;
     position: relative;
+    border-radius: 4px;
 }
 
 .block-left {
     background: #FFFFFF;
-    width: 40%;
-    min-width: 400px; 
+    width: 44.5%;
+    min-width: 640px; 
     display: flex;
     flex-direction: column;
 }
 
+
+
 .block-right {
-    width: 60%;
-    background: url("https://s3-alpha-sig.figma.com/img/c171/479b/555115e74d039faa6d7002ba7751523c?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VLX1bIRVDT-gJxjxYCII4piOr~GqGLoDmMdBUeAXaXg2DUvJ0BonyejNpPs1kOv1FDQEkDfmrfCA-2i7mjhp4nE6USbJoBAMT18WblqQSIya21jOzr~rGs2Tl4Tw0s570z7XDhlnPHp3I3Zk1h13gv2NiAo9bdrQgHC7O6C63lOpmkxs~DaoWmW8c73ldHYwztPi0MpMgIag1kq2DTU-BIuvgJkcuJ-dXVhRFGiZVC7CMVq8xsARUvlTVFCaWgxR~qCHDlg-Gdhkpe7T7rV1rQlW5yONgWeZBRCBEW6OYHtOxk57~4m4y8uGKIIy0uD-n-3quXUnDxh-RPkeHqZ0RQ__") center/cover no-repeat;
+    width: 55.5%;
+    background: url("https://s3-alpha-sig.figma.com/img/c171/479b/555115e74d039faa6d7002ba7751523c?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=AnDtS~xpVD~nBpLKAJXGt4sueA7uh7w4cdmYfZS~UB5ez~Q5mK0A04r8BMPkyX~GMXrKTjR7glQBW4o7-TFZXFyOJJ1jsKb8G1L2O-kSQldWTvPrldx3ZiZJ6diWzsisaHTyh0ovQy4vMFfeoALvT2uSb4zvBzVXslu3pbb0XwFhw1dRNu6nxLu2aDV521azrCS4ymB7rjFmFkx2GPj9Nb17tDtMjkxk3DGFfREPLf5-XdU13kFyCV8dM-Knu7Zmv2bYymHB44paEKu5fXE0JlHgw~ustUWeyBpCizhePMGtqfna5m0EMo72kCmpK96FD0YoyAjKdYC0IAtR6GqYKA__") center/cover no-repeat;
 }
 
 
@@ -56,50 +58,72 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("https://s3-alpha-sig.figma.com/img/c171/479b/555115e74d039faa6d7002ba7751523c?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=VLX1bIRVDT-gJxjxYCII4piOr~GqGLoDmMdBUeAXaXg2DUvJ0BonyejNpPs1kOv1FDQEkDfmrfCA-2i7mjhp4nE6USbJoBAMT18WblqQSIya21jOzr~rGs2Tl4Tw0s570z7XDhlnPHp3I3Zk1h13gv2NiAo9bdrQgHC7O6C63lOpmkxs~DaoWmW8c73ldHYwztPi0MpMgIag1kq2DTU-BIuvgJkcuJ-dXVhRFGiZVC7CMVq8xsARUvlTVFCaWgxR~qCHDlg-Gdhkpe7T7rV1rQlW5yONgWeZBRCBEW6OYHtOxk57~4m4y8uGKIIy0uD-n-3quXUnDxh-RPkeHqZ0RQ__") center/cover no-repeat;
+    background: url("https://s3-alpha-sig.figma.com/img/c171/479b/555115e74d039faa6d7002ba7751523c?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=AnDtS~xpVD~nBpLKAJXGt4sueA7uh7w4cdmYfZS~UB5ez~Q5mK0A04r8BMPkyX~GMXrKTjR7glQBW4o7-TFZXFyOJJ1jsKb8G1L2O-kSQldWTvPrldx3ZiZJ6diWzsisaHTyh0ovQy4vMFfeoALvT2uSb4zvBzVXslu3pbb0XwFhw1dRNu6nxLu2aDV521azrCS4ymB7rjFmFkx2GPj9Nb17tDtMjkxk3DGFfREPLf5-XdU13kFyCV8dM-Knu7Zmv2bYymHB44paEKu5fXE0JlHgw~ustUWeyBpCizhePMGtqfna5m0EMo72kCmpK96FD0YoyAjKdYC0IAtR6GqYKA__") center/cover no-repeat;
     transform: scale(-1, -1);
+    border-radius: 4px;
 }
 
 
 .zagolovok {
     max-width: 360px;
-    min-height: 100px;
-    margin: 40px auto 0;
-    font-family: SF Pro Display;
+    max-height: 72px;
+    margin-top: 167px;
+    margin-left: 140px;
+    font: 'SF Pro Display';
     font-weight: 700;
-    font-size: clamp(24px, 5vw, 32px);
-    line-height: 1.2;
+    font-size: 28px;
+    line-height: 36px;
     letter-spacing: 0.2px;
     text-align: center;
     padding: 0 20px;
+    color: #2D334C;
 }
 
-.Login, .Password {
+.Login{
     width: 100%;
     max-width: 360px;
-    margin: 30px auto 0;
-    font-family: 'Roboto';
+    height: 48px;
+    margin-top: 120px;
+    margin-left: 140px;
+    font: 'SF Pro Display';
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 0 20px;
+    color: #505F8D;
+} 
+
+.Password {
+    width: 100%;
+    max-width: 360px;
+    height: 48px;
+    margin-top: 107px;
+    margin-left: 140px;
+    font: 'SF Pro Display';
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 20px;
+    color: #505F8D;
 }
 
 .inp1, .inp2 {
     width: 100%;
     min-height: 48px;
-    font-family: 'Roboto';
-    font-size: 14px;
+    font: 'SF Pro Display';
+    font-size: 18px;
     line-height: 22px;
-    color: #000000;
     box-sizing: border-box;
+    border-color: #ECEDF4;
+    border-radius: 8px;
 }
 
 .remember-me {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 60px auto 0;
+    margin-top: 99px;
+    margin-left: 140px;
     min-height: 30px;
     max-width: 360px;
     padding: 0 20px;
@@ -107,7 +131,8 @@
 
 .Zareg {
     max-width: 360px;
-    margin: 80px auto 0;
+    margin-top: 60px;
+    margin-left: 150px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -115,9 +140,31 @@
     padding: 0 20px;
 }
 
-.btnzar, .btnauth {
+.btnzar{
     min-width: 112px;
     min-height: 56px;
+    flex: 1;
+    font-size: 16px;
+    font: 'SF Pro Display';
+    background: #084F85;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    padding-top: 17px;
+    padding-left: 32px;
+    padding-bottom: 17px;
+    padding-right: 32px;
+} 
+
+.btnauth {
+    min-width: 174px;
+    min-height: 56px;
+    font: 'SF Pro Display';
+    font-size: 16px;
+    line-height: 22px;
+    background: #FFFFFF;
+    color: #084F85;
+    border: none;
     flex: 1;
 }
 
