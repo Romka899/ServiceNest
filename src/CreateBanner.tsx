@@ -32,10 +32,15 @@ const CreateBanner: React.FC = () => {
         setImages(newImages);
     };
 
-    const handleLoginRedirect = () => {
+
+    const handleLogout = () => {
+
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('username');
-        navigate('/'); 
+        localStorage.removeItem('rememberedUsername'); 
+        navigate('/autorization');
+        
+        window.location.reload();
     };
 
     const handleSubmit = async () => {
@@ -102,9 +107,8 @@ const CreateBanner: React.FC = () => {
                     <h1 className="page-title">Добавление рекламных объектов</h1>
                     <div className="settings-block">
                         <h2>Детали размещения</h2>
-                        
                         <div className="form-group">
-                            <label>Место показа:</label>
+                            <label className='Naming'>Место показа:</label>
                             <select 
                                 value={placement} 
                                 onChange={(e) => setPlacement(e.target.value)}
@@ -115,10 +119,11 @@ const CreateBanner: React.FC = () => {
                                 <option value="middle">Середина страницы</option>
                                 <option value="bottom">Низ страницы</option>
                             </select>
+
                         </div>
                         
                         <div className="form-group">
-                            <label>Приложение для показа:</label>
+                            <label>Приложение для показа:
                             <select 
                                 value={app} 
                                 onChange={(e) => setApp(e.target.value)}
@@ -128,6 +133,7 @@ const CreateBanner: React.FC = () => {
                                 <option value="app1">Приложение 1</option>
                                 <option value="app2">Приложение 2</option>
                             </select>
+                            </label>
                         </div>
                         
                         <div className="form-group checkbox-group">
@@ -263,7 +269,7 @@ const CreateBanner: React.FC = () => {
                     
                     <div className="action-buttons">
                         <button 
-                            onClick={handleLoginRedirect} 
+                            onClick={handleLogout} 
                             className="logout-btn"
                         >
                             Выйти

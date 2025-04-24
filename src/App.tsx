@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import Register from './Register';
 import CreateBanner from './CreateBanner';
 import Autorisation from './Autorisation';
+import SessionChecker from './SessionChecker';
 
 const AppContent: React.FC = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const AppContent: React.FC = () => {
         <div className="app">
             <Routes>
                 <Route path="/" element={<Register />} />
-                <Route path="/autorisation" element={<Autorisation />} />
+                <Route path="/autorization" element={<Autorisation />} />
                 <Route path="/create-banner" element={<CreateBanner />} />
             </Routes>
         </div>

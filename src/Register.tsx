@@ -10,32 +10,46 @@ const Register: React.FC = () => {
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
 
+
+
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
         try {
-            const response = await api.post('/register', {
+            console.log('Отправка запроса регистрации');
+            const response = await api.post('/register' , {
                 username,
                 password,
+            },{
+                withCredentials: true
             });
             alert(response.data);
+            const loginResponse = api.post('/authorization', {
+                username,
+                password,
+            }, {
+                withCredentials:true
+            });
+            alert(loginResponse);
             localStorage.setItem('username', username);
+            localStorage.setItem('isAuthenticated', 'true');
             navigate('/create-banner');
-        } catch (error) {
-            setError('Ошибка при регистрации. Пожалуйста, попробуйте снова.');
-            console.error('Ошибка регистрации:', error);
-        }
-    };
+            } catch (error: any) {
+                console.error('Ошибка регистрации:', error);
+                setError(error.response?.data?.message || 'Ошибка регистрации');
+            }
+          };
 
     const handleLoginRedirect = () => {
-        navigate('/autorisation');
+        navigate('/autorization');
     };
+
 
     const Header = () => {
         return (
-            <div className="logo" >
-                <img src = {logo} alt=""/>
+            <div className="logo">
+                <img src={logo} alt=""/>
             </div>
         );
     };
@@ -44,55 +58,50 @@ const Register: React.FC = () => {
         <div className="reg">
             <div className='block-left-content'>
                 <div className='block-left'>
-                <Header/>
-                <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <form onSubmit={handleRegister}>
-                    <div className='Login'>
-                        <label className='log'>Введите номер телефона</label>
-                        <input 
-                            className='inp1' 
-                            type="text" 
-                            value={username} 
-                            onChange={(e) => setUsername(e.target.value)} 
-                            required
-                        />
-                    </div>
-                    <div className='Password'>
-                        <label className='pass'>Пароль</label>
-                        <input 
-                            className='inp2' 
-                            type="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required
-                        />
-                    </div>
-                    <div className="remember-me">
-                        <input className="checkbox" type="checkbox" id="remember" />
-                        <label>Запомнить логин</label>
-                    </div>
-                    <div className='Zareg'>
-                        <button className='btnzar' 
-                            type="submit">
-                            Войти
-                        </button>
-                        <button className='btnauth'
-                            type="button" 
-                            onClick={handleLoginRedirect} 
-                        >
-                            Авторизация
-                        </button>
-                    </div>
-                    <div className='copyright'>
-                        Копирайт © 2025 ООО «Компас Плюс»
-                    </div>
-                </form>
+                    <Header/>
+                    <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <form onSubmit={handleRegister}>
+                        <div className='Login'>
+                            <label className='log'>Введите номер телефона</label>
+                            <input 
+                                className='inp1' 
+                                type="text" 
+                                value={username} 
+                                onChange={(e) => setUsername(e.target.value)} 
+                                required
+                                
+                            />
+                        </div>
+                        <div className='Password'>
+                            <label className='pass'>Пароль</label>
+                            <input 
+                                className='inp2' 
+                                type="password" 
+                                value={password} 
+                                onChange={(e) => setPassword(e.target.value)} 
+                                required
+                            />
+                        </div>
+                        <div className='EmptyHeight'></div>
+                        <div className='Zareg'>
+                            <button className='btnzar' type="submit">
+                                Войти
+                            </button>
+                            <button className='btnauth'
+                                type="button" 
+                                onClick={handleLoginRedirect} 
+                            >
+                                Авторизация
+                            </button>
+                        </div>
+                        <div className='copyright'>
+                            Копирайт © 2025 ООО «Компас Плюс»
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div className='block-right'>
-                
-            </div>
+            <div className='block-right'></div>
         </div>
     );
 }

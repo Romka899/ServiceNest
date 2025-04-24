@@ -1,10 +1,65 @@
 
+.zagolovok2{
+    max-width: 360px;
+    max-height: 72px;
+    margin-top: 167px;
+    margin-left: 140px;
+    font: 'SF Pro Display';
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: 0.2px;
+    text-align: center;
+    padding: 0 20px;
+    color: #2D334C;
+}
+
+
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 99px;
+    margin-left: 140px;
+    min-height: 30px;
+    max-width: 360px;
+    padding: 0 20px;
+}
+
+.btnzar2{
+    min-width: 174px;
+    min-height: 56px;
+    font: 'SF Pro Display';
+    font-size: 16px;
+    line-height: 22px;
+    background: #FFFFFF;
+    color: #084F85;
+    border: none;
+    flex: 1;
+    
+} 
+
+.btnauth2 {
+    min-width: 112px;
+    min-height: 56px;
+    flex: 1;
+    font-size: 16px;
+    font: 'SF Pro Display';
+    background: #084F85;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    padding-top: 17px;
+    padding-left: 32px;
+    padding-bottom: 17px;
+    padding-right: 32px;
+}
+
 .Error{
     display: flex;
     justify-content: center;
 }
 
-.EmptyHeight{
-    min-height: 90px;
-}
+
 
