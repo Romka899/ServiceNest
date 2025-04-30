@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "./Autorisation.css"
 import logo from "./img/logocomp.png"
+import { AuthResponse } from '../../test/tests/src/auth/interfaces/auth.interface'
+//'./test/tests/src/auth/interfaces/auth.interface.ts'
 
 const Autorisation: React.FC = () => {
     const [username, setUsername] = useState<string>('');
@@ -29,29 +31,35 @@ const Autorisation: React.FC = () => {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        
         try {
-            const response = await axios.post('/autorization', {
-                username,
-                password,
-            });
-
-            if (response.data.message === 'Авторизация успешна') {
+            const { data } = await axios.post<AuthResponse>(
+                'http://localhost:3000/api/authorization',
+                { username, password },
+                {
+                    withCredentials: true,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+    
+            if (data.status === 'success' && data.data?.user) {
                 localStorage.setItem('isAuthenticated', 'true');
                 localStorage.setItem('username', username);
                 if (rememberMe) {
                     localStorage.setItem('rememberedUsername', username);
-                } else {
-                    localStorage.removeItem('rememberedUsername');
                 }
-                navigate('/create-banner'); 
+                navigate('/ad-objects');
             } else {
-                setError('Неверный логин или пароль');
+                setError(data.message || 'Ошибка авторизации');
             }
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            console.error('Ошибка при авторизации:', axiosError);
-            setError('Такого пользователя нет');
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                setError(err.response?.data?.message || 'Ошибка сервера');
+            } else if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('Неизвестная ошибка');
+            }
         }
     };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from './api';
+import * as axios from 'axios'; 
 import "./Register.css"
 import logo from "./img/logocomp.png"
 
@@ -12,34 +13,38 @@ const Register: React.FC = () => {
 
 
 
-    const handleRegister = async (e: React.FormEvent) => {
+      
+      const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-
+    
         try {
-            console.log('Отправка запроса регистрации');
-            const response = await api.post('/register' , {
-                username,
-                password,
-            },{
-                withCredentials: true
-            });
-            alert(response.data);
-            const loginResponse = api.post('/authorization', {
-                username,
-                password,
-            }, {
-                withCredentials:true
-            });
-            alert(loginResponse);
+            await api.post('/register', 
+                { username, password },
+                { withCredentials: true }
+            );
+    
             localStorage.setItem('username', username);
             localStorage.setItem('isAuthenticated', 'true');
             navigate('/create-banner');
-            } catch (error: any) {
-                console.error('Ошибка регистрации:', error);
-                setError(error.response?.data?.message || 'Ошибка регистрации');
+        } catch (err) {
+
+            if (axios.isAxiosError(err)) {
+                console.error('Axios error:', {
+                    message: err.message,
+                    code: err.code,
+                    response: err.response?.data
+                });
+                setError(err.response?.data?.message || 'Ошибка регистрации');
+            } else if (err instanceof Error) {
+                console.error('Native error:', err.message);
+                setError(err.message);
+            } else {
+                console.error('Unexpected error:', err);
+                setError('Неизвестная ошибка');
             }
-          };
+        }
+    };
 
     const handleLoginRedirect = () => {
         navigate('/autorization');

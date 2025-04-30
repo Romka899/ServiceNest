@@ -11,15 +11,29 @@ const SessionChecker = () => {
             try{
                 await api.get('/check-session');
             } catch (error) {
-                localStorage.removeItem('isAuthenticated');
-                navigate('/');
+                localStorage.clear();
+                navigate('/autorization');
+                window.location.reload()
             }
         };
 
         const interval = setInterval(checkSession, 1 * 1000);
 
-        checkSession();
+        //checkSession();
         return() => clearInterval(interval);
+    }, [navigate]);
+
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                await api.get('/check-session');
+            } catch (error) {
+                localStorage.clear();
+                navigate('/autorization');
+            }
+        };
+        checkAuth();
     }, [navigate]);
 
     return null;

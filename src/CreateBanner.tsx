@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./CreateBanner.css";
 import logo from "./img/logocomp.png"
+import axios from 'axios';
 
 const CreateBanner: React.FC = () => {
     const navigate = useNavigate();
@@ -43,6 +44,10 @@ const CreateBanner: React.FC = () => {
         window.location.reload();
     };
 
+    const handleBack = () => {
+        navigate('/ad-objects');
+    }
+
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
@@ -63,24 +68,26 @@ const CreateBanner: React.FC = () => {
                 formData.append('images', image);
             });
     
-            const response = await fetch('http://localhost:3000/api/save-banner', {
-                method: 'POST',
-                body: formData,
+            const response = await axios.post('http://localhost:3000/api/save-banner', formData, {
+                withCredentials: true
             });
     
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error( errorData.massage ||'Ошибка при сохранении данных');
-            }
-    
-            const result = await response.json();
-            alert('Настройки и изображения успешно сохранены!');
-            console.log('Сервер вернул:', result);
+            if (response.data.status === 'success') {
+                alert('Баннер успешно сохранен');
+            } 
         } catch (error) {
-            console.error('Ошибка:', error);
-            alert('Произошла ошибка при сохранении');
-        }
-    };
+            if (axios.isAxiosError(error)) {
+              if (error.response?.status === 401) {
+                localStorage.removeItem('isAuthenticated');
+                window.location.href = '/autorization';
+              } else {
+                alert(error.response?.data?.message || 'Ошибка сохранения');
+              }
+            } else {
+              alert('Неизвестная ошибка');
+            }
+          }
+        };
 
     const Header = () => {
         return (
@@ -273,6 +280,12 @@ const CreateBanner: React.FC = () => {
                             className="logout-btn"
                         >
                             Выйти
+                        </button>
+                        <button
+                            onClick={handleBack}
+                            className="back-btn"
+                        >
+                            Назад к рекламным объектам
                         </button>
                         <button 
                             onClick={handleSubmit} 
