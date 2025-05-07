@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from './api';
-import * as axios from 'axios'; 
+import axios from 'axios'; 
 import "./Register.css"
 import logo from "./img/logocomp.png"
 
@@ -13,10 +13,10 @@ const Register: React.FC = () => {
 
 
 
+    
       
       const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
     
         try {
             await api.post('/register', 
@@ -35,7 +35,7 @@ const Register: React.FC = () => {
                     code: err.code,
                     response: err.response?.data
                 });
-                setError(err.response?.data?.message || 'Ошибка регистрации');
+                setError('Ошибка регистрации');
             } else if (err instanceof Error) {
                 console.error('Native error:', err.message);
                 setError(err.message);
@@ -65,7 +65,6 @@ const Register: React.FC = () => {
                 <div className='block-left'>
                     <Header/>
                     <h1 className='zagolovok'>Сервис загрузки рекламных объектов</h1>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
                     <form onSubmit={handleRegister}>
                         <div className='Login'>
                             <label className='log'>Введите номер телефона</label>
@@ -100,6 +99,7 @@ const Register: React.FC = () => {
                                 Авторизация
                             </button>
                         </div>
+                        {error && <div className='Error' style={{color: 'red' }}>{error}</div>}
                         <div className='copyright'>
                             Копирайт © 2025 ООО «Компас Плюс»
                         </div>

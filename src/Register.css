@@ -1,5 +1,5 @@
 .app {
-    background-image: url("https://s3-alpha-sig.figma.com/img/41ad/0aca/de5685a616141bbc8b0ed8de01992809?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=uEJxRdMoND7wlGmufYCbxFh2PFHxl1Qb9Sb5uXcb9MQFcKUnf7h5L-kj5Omc8-tGtPKpRXzIC6LFF4yLPOpQIs65T20uqk8bXnCH26vK930rIR7bUZQrypFEpgIlfblJyCa1z9-ItDpfE5M~baQciWwG1FQoR9PKKM1zPHYqc8-InywS2hQZaZPjWeL0d11IeZs8LJAd25zd9yfCotGEGLxIp-dpN6Lw6wYRyU9DUnKzPY80HlI2MItulkaYhAtniEYB6e~Rn44P1AsoxwWfBdHNj~rWAMdJbsErP2ZpbT7w1r~0tAWrKKCqoYNOmNodo8azM~cR0dNikTVgpIMl0A__");
+    background-image: url("/Users/rvaleev/Desktop/Test/auth-frontend/src/img/Back.png");
     background-size: cover;
     background-repeat: no-repeat;
     display: flex;
@@ -53,7 +53,7 @@
     transform: scale(-1, -1);
     width: 55.5%;
     flex-grow: 1;
-    background: url("https://s3-alpha-sig.figma.com/img/c171/479b/555115e74d039faa6d7002ba7751523c?Expires=1746403200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=AnDtS~xpVD~nBpLKAJXGt4sueA7uh7w4cdmYfZS~UB5ez~Q5mK0A04r8BMPkyX~GMXrKTjR7glQBW4o7-TFZXFyOJJ1jsKb8G1L2O-kSQldWTvPrldx3ZiZJ6diWzsisaHTyh0ovQy4vMFfeoALvT2uSb4zvBzVXslu3pbb0XwFhw1dRNu6nxLu2aDV521azrCS4ymB7rjFmFkx2GPj9Nb17tDtMjkxk3DGFfREPLf5-XdU13kFyCV8dM-Knu7Zmv2bYymHB44paEKu5fXE0JlHgw~ustUWeyBpCizhePMGtqfna5m0EMo72kCmpK96FD0YoyAjKdYC0IAtR6GqYKA__") center/cover no-repeat;
+    background: url("/Users/rvaleev/Desktop/Test/auth-frontend/src/img/Right.jpg") center/cover no-repeat;
 }
 
 
@@ -154,7 +154,7 @@
 .copyright {
     text-align: center;
     padding: 20px;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .EmptyHeight{

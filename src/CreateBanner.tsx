@@ -1,24 +1,37 @@
 import React, { useState, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import "./CreateBanner.css";
 import logo from "./img/logocomp.png"
 import axios from 'axios';
+import addpic from "./img/icon-park-solid_add-pic.png";
+import Ex from "./img/ExitIcon.png";
+
+
+
+
 
 const CreateBanner: React.FC = () => {
     const navigate = useNavigate();
-    
-    const [placement, setPlacement] = useState<string>('');
-    const [app, setApp] = useState<string>('');
-    const [hideable, setHideable] = useState<boolean>(false);
+    const location = useLocation();
+
+    const {company} = location.state || {};
+    const {bannerData} = location.state || {};
+
+    const [selectedCompany] = useState(company?.companyName || '');
+    const [selectedCompanyId] = useState(company?.id?.toString() || '');
+    const [placement, setPlacement] = useState(bannerData?.placement || '');
+    const [app, setApp] = useState(bannerData?.app || '');
+    const [hideable, setHideable] = useState(bannerData?.hedeable || false);
     
     const [images, setImages] = useState<File[]>([]);
-    const [link, setLink] = useState<string>('');
+    //const [existingImages, setExistingImages] = useState<string[]>(bannerData?.imageNames || []);
+    const [link, setLink] = useState(bannerData?.link || '');
  
-    const [period, setPeriod] = useState<string>('');
-    const [impressions, setImpressions] = useState<string>('');
-    const [userImpressions, setUserImpressions] = useState<string>('');
-    const [showTime, setShowTime] = useState<string>('');
-    const [geoTargeting, setGeoTargeting] = useState<string>('');
+    const [period, setPeriod] = useState(bannerData?.period || '');
+    const [impressions, setImpressions] = useState(bannerData?.impressions || '');
+    const [userImpressions, setUserImpressions] = useState(bannerData?.userImpressions || '');
+    const [showTime, setShowTime] = useState(bannerData?.showTime || '');
+    const [geoTargeting, setGeoTargeting] = useState(bannerData?.geoTargeting || '');
 
     const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && images.length < 5) {
@@ -34,24 +47,36 @@ const CreateBanner: React.FC = () => {
     };
 
 
-    const handleLogout = () => {
-
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('username');
-        localStorage.removeItem('rememberedUsername'); 
-        navigate('/autorization');
-        
-        window.location.reload();
-    };
+const handleLogout = async () => {
+  try {
+    await axios.post('http://localhost:3000/api/logout', {}, {
+      withCredentials: true
+    });
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('username');
+    navigate('/autorization');
+    window.location.reload();
+  } catch (error) {
+    console.error('Ошибка при выходе:', error);
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('username');
+    navigate('/autorization');
+    //window.location.reload();
+  }
+};
 
     const handleBack = () => {
         navigate('/ad-objects');
     }
 
+
+
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
             
+            formData.append('companyId', String(selectedCompanyId) || '');
+            formData.append('companyName', selectedCompany || '');
             formData.append('placement', placement);
             formData.append('app', app);
             formData.append('hideable', String(hideable));
@@ -62,6 +87,7 @@ const CreateBanner: React.FC = () => {
             formData.append('showTime', showTime);
             formData.append('geoTargeting', geoTargeting);
             formData.append('username', localStorage.getItem('username') || 'unknown');
+
             
 
             images.forEach((image) => {
@@ -89,21 +115,47 @@ const CreateBanner: React.FC = () => {
           }
         };
 
+
+
     const Header = () => {
+        const handleLogout = async () => {
+          try {
+            await axios.post('http://localhost:3000/api/logout', {}, {
+              withCredentials: true
+            });
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('username');
+            navigate('/autorization');
+            window.location.reload();
+          } catch (error) {
+            console.error('Ошибка при выходе:', error);
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('username');
+            navigate('/autorization');
+            //window.location.reload();
+          }
+        };
+      
         return (
-            <header className="app-header">
-                <div className="header-content">
-                    <div className='head-logo'>
-                        <img src = {logo} alt=""/>
-                    </div>
-                    <h1 >Рекламная платформа</h1>
-                    <div className="user-info">
-                        <span>{localStorage.getItem('username') || 'Пользователь'}</span>
-                    </div>
+          <header className="app-header">
+            <div className="header-content">
+                <div className='head-logo'>
+                    <img src = {logo} alt=""/>
                 </div>
-            </header>
+                <div className='compblock'>
+                    <img className='logocomp' src = {company.companyLogo} alt = {company.companyName}/>
+                    <h1 className='namecomp'>{selectedCompany}</h1>
+                </div>
+              <div className="user-info">
+                <span>{localStorage.getItem('username') || 'Пользователь'}</span>
+                <button onClick={handleLogout} className="logout-btn">
+                  <img src={Ex} alt="Выход" title="Выйти из системы"/>
+                </button>
+              </div>
+            </div>
+        </header>
         );
-    };
+      };
 
     return (
         <div className='app-all'>
@@ -159,6 +211,7 @@ const CreateBanner: React.FC = () => {
                         <div className="image-upload-container">
                             {images.length < 5 && (
                                 <label className="upload-btn">
+                                    <img src={addpic} alt=''></img>
                                     Добавить изображение
                                     <input
                                         type="file"
@@ -275,21 +328,21 @@ const CreateBanner: React.FC = () => {
                     </div>
                     
                     <div className="action-buttons">
-                        <button 
+                        <button
                             onClick={handleLogout} 
-                            className="logout-btn"
+                            className="logout-btn2"
                         >
                             Выйти
                         </button>
                         <button
                             onClick={handleBack}
-                            className="back-btn"
+                            className="back-btn2"
                         >
                             Назад к рекламным объектам
                         </button>
                         <button 
                             onClick={handleSubmit} 
-                            className="submit-btn"
+                            className="submit-btn2"
                         >
                             Сохранить
 

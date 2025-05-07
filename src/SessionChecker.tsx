@@ -19,7 +19,7 @@ const SessionChecker = () => {
 
         const interval = setInterval(checkSession, 1 * 1000);
 
-        //checkSession();
+        checkSession();
         return() => clearInterval(interval);
     }, [navigate]);
 

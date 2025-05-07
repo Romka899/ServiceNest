@@ -7,7 +7,7 @@ import SK from './img/SKlogo.png';
 import YA from './img/YAlogo.png';
 import BB from './img/BBlogo.png';
 import OZ from './img/OZlogo.png';
-//import Ex from './img/ExitIcon.png';
+import Ex from './img/ExitIcon.png';
 
 
 type Banner = {
@@ -20,6 +20,7 @@ type Banner = {
   username: string;
   userId: string;
   companyId: number;
+  companyName: string;
 };
 
 
@@ -27,6 +28,7 @@ type AdObject = {
   id: number;
   companyLogo: string;
   companyName: string;
+  banners?: Banner[];
 };
 
 const BannerSelection: React.FC = () => {
@@ -34,7 +36,7 @@ const BannerSelection: React.FC = () => {
   const [selectedCompany, setSelectedCompany] = useState<AdObject | null>(null);
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(true);
-  const cerrentUser = localStorage.getItem('username') || '';
+  //const cerrentUser = localStorage.getItem('username') || '';
 
 
   const adObjects: AdObject[] = [
@@ -64,33 +66,52 @@ const BannerSelection: React.FC = () => {
     }
   ];
 
+  
   useEffect(() => {
-    const fetchUserBanners = async() => {
-      try{
+    const fetchUserBanners = async () => {
+      try {
         const response = await axios.get('http://localhost:3000/api/user-banners', {
-          withCredentials: true
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
         setBanners(response.data);
+      } catch (error) {
+        console.error('Full error details:', error);
+        if (axios.isAxiosError(error)) {
+            console.error('Error response:', error.response?.data);
+        }
+    } finally {
         setLoading(false);
-      }catch(error)
-      {
-        console.log('Error fetching user banners', error);
-        setLoading(false);
-      }
-    };
-    
-    fetchUserBanners();
-  }, []);
+    }
+};
+
+fetchUserBanners();
+}, [navigate]);
 
 
+const handleSelectCompany = (company: AdObject) => {
+  const companyBanners = banners.filter(b => 
+    (b.userId === localStorage.getItem('username') || 
+     b.username === localStorage.getItem('username')) &&
+    b.companyId?.toString() === company.id.toString()
+  );
+  
+  setSelectedCompany({
+    ...company,
+    banners: companyBanners
+  });
+};
 
-  const handleSelectCompany = (company: AdObject) => {
-    setSelectedCompany(company);
-  };
 
   const handleCreateNewBanner = () => {
     if (selectedCompany) {
-      navigate(`/create-banner/${selectedCompany.id}`);
+      navigate(`/create-banner/${selectedCompany.id}`, {
+        state: { 
+          company: selectedCompany 
+        }
+      });
     } 
   };
 
@@ -98,12 +119,35 @@ const BannerSelection: React.FC = () => {
     setSelectedCompany(null);
   };
 
-  const handleEditBanner = (bannerId: string) => {
-    navigate(`/edit-banner/${bannerId}`);
+  const handleEditBanner = (banner: Banner) => {
+    navigate(`/edit-banner/${banner.id}`, {
+      state: {
+        company: selectedCompany,
+        bannerData: banner
+      }
+    });
   };
 
 
   const Header = ({ title }: { title: string }) => {
+    const handleLogout = async () => {
+      try {
+        await axios.post('http://localhost:3000/api/logout', {}, {
+          withCredentials: true
+        });
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('username');
+        navigate('/autorization');
+        window.location.reload();
+      } catch (error) {
+        console.error('Ошибка при выходе:', error);
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('username');
+        navigate('/autorization');
+        //window.location.reload();
+      }
+    };
+  
     return (
       <header className="app-header">
         <div className="header-content">
@@ -113,15 +157,19 @@ const BannerSelection: React.FC = () => {
           <h1>{title}</h1>
           <div className="user-info">
             <span>{localStorage.getItem('username') || 'Пользователь'}</span>
+            <button onClick={handleLogout} className="logout-btn">
+              <img src={Ex} alt="Выход" title="Выйти из системы"/>
+            </button>
           </div>
         </div>
-      </header>
+    </header>
     );
   };
 
-  if(loading){
-    return <div>Загрузка...</div>
+  if (loading) {
+    return <div>Загрузка...</div>;
   }
+  
   return (
     <div className='app-all'>
       <div className="app-container2">
@@ -139,44 +187,30 @@ const BannerSelection: React.FC = () => {
               </div>
               
               <div className="banners-grid">
-                {banners
-                .filter(banner => banner.companyId === selectedCompany.id)
-                .map(banner =>(
+                {selectedCompany.banners?.map((banner, index) => (
                   <div
                     key={banner.id}
                     className="banner-card"
-                    onClick={() => handleEditBanner(banner.id)}
+                    onClick={() => handleEditBanner(banner)}
                   >
-                    <div className="banner-image-placeholder">
-                      {banner.imageNames?.[0] ?(
-                        <img
-                          src={`http://localhost:3000/images/${banner.imageNames[0]}`}
-                          alt={banner.bannerName}
-                        />
-                      ) : (
-                        <span>{banner.bannerName}</span>
-                      )}
-                    </div>
                     <div className="banner-info">
-                      <h3 className="banner-name">{banner.bannerName}</h3>
+                      <h3>
+                        Рекламный объект {index + 1}
+                      </h3>
                       <p className="banner-date">
-                        {new Date(banner.timestamp).toLocaleDateString()}
+                        Создан: {new Date(banner.timestamp).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
-                ))
-              }
+                ))}
               </div>
               
               <div className="action-buttons">
-                <button 
-                  onClick={handleGoBack}
-                  className="back-btn"
-                >
+                <button onClick={handleGoBack} className="back-btn">
                   Назад
                 </button>
                 <button 
-                  onClick={handleCreateNewBanner}
+                  onClick={handleCreateNewBanner} 
                   className="create-btn"
                 >
                   Добавить баннер
@@ -192,25 +226,36 @@ const BannerSelection: React.FC = () => {
               
               <div className="companies-conteiner">
                 {adObjects.map(company => {
-                  const companyBanners = banners.filter(b => b.companyId === company.id);
-                  return(                  
-                  <div 
-                    key={company.id} 
-                    className="company-card"
-                    onClick={() => handleSelectCompany(company)}
-                  >
-                    <div className="company-card-content">
-                      <img 
-                        src={company.companyLogo} 
-                        alt={`Логотип ${company.companyName}`}
-                        className="company-logo"
-                      />
-                      <h3 className="company-name">{company.companyName}</h3>
+                  const companyBanners = banners.filter(b => {
+                    const isUserBanner = b.userId === localStorage.getItem('username') || 
+                                        b.username === localStorage.getItem('username');
+                    
+                    const isCompanyBanner = b.companyId !== undefined && 
+                                          b.companyId !== null &&
+                                          b.companyId.toString() === company.id.toString();
+                    
+                    return isUserBanner && isCompanyBanner;
+                  });
+                  
+                  return (                  
+                    <div 
+                      key={company.id} 
+                      className="company-card"
+                      onClick={() => handleSelectCompany(company)}
+                    >
+                      <div className="company-card-content">
+                        <img 
+                          src={company.companyLogo} 
+                          alt={`Логотип ${company.companyName}`}
+                          className="company-logo"
+                        />
+                        <h3 className="company-name">{company.companyName}</h3>
+                      </div>
+                      <div className="banners-count">
+                        Баннеров: {companyBanners.length}
+                      </div>
                     </div>
-                    <div className="banners-count">
-                      Баннеров: {companyBanners.length}
-                    </div>
-                  </div>);
+                  );
                 })}
               </div>
             </div>

@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "./Autorisation.css"
 import logo from "./img/logocomp.png"
-import { AuthResponse } from '../../test/tests/src/auth/interfaces/auth.interface'
+//import { AuthResponse } from '../../test/tests/src/auth/interfaces/auth.interface'
 //'./test/tests/src/auth/interfaces/auth.interface.ts'
 
 const Autorisation: React.FC = () => {
-    const [username, setUsername] = useState<string>('');
+    const [username, setUsername] = useState<string>(() => {
+        return localStorage.getItem('rememberedUsername') || '';
+      });
+    const [rememberMe, setRememberMe] = useState<boolean>(() => {
+        return localStorage.getItem('rememberMe') === 'true';
+      });
+
     const [password, setPassword] = useState<string>('');
-    const [rememberMe, setRememberMe] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const savedUsername = localStorage.getItem('rememberedUsername');
-        if (savedUsername) {
-            setUsername(savedUsername);
-            setRememberMe(true);
-        }
-    }, []);
+
+    
 
     const handleRememberMeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRememberMe(e.target.checked);
@@ -29,39 +29,39 @@ const Autorisation: React.FC = () => {
         }
     };
 
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        try {
-            const { data } = await axios.post<AuthResponse>(
-                'http://localhost:3000/api/authorization',
-                { username, password },
-                {
-                    withCredentials: true,
-                    headers: { 'Content-Type': 'application/json' }
-                }
-            );
+const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     
-            if (data.status === 'success' && data.data?.user) {
-                localStorage.setItem('isAuthenticated', 'true');
-                localStorage.setItem('username', username);
-                if (rememberMe) {
-                    localStorage.setItem('rememberedUsername', username);
-                }
-                navigate('/ad-objects');
-            } else {
-                setError(data.message || 'Ошибка авторизации');
-            }
-        } catch (err: unknown) {
-            if (axios.isAxiosError(err)) {
-                setError(err.response?.data?.message || 'Ошибка сервера');
-            } else if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('Неизвестная ошибка');
-            }
+    try {
+      const response = await axios.post('http://localhost:3000/api/authorization', 
+        { username, password },
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
         }
-    };
+      );
+  
+      if (response.data.status === 'success') {
+        if (rememberMe) {
+            localStorage.setItem('rememberedUsername', username);
+            localStorage.setItem('rememberMe', 'true');
+          } else {
+            localStorage.removeItem('rememberedUsername');
+            localStorage.removeItem('rememberMe');
+          }
+  
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('username', username);
+        navigate('/ad-objects');
+      }
+    } catch (error) {
+      console.error('Ошибка авторизации:', error);
+      setError('Неверные учетные данные или ошибка сервера');
+    }
+  };
 
     const handleRegistrRedirect = () => {
         navigate('/');
