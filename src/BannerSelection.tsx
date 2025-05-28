@@ -21,6 +21,9 @@ type Banner = {
   userId: string;
   companyId: number;
   companyName: string;
+  showTime: string;
+  period: string;
+  isActive?: boolean;
 };
 
 
@@ -36,6 +39,8 @@ const BannerSelection: React.FC = () => {
   const [selectedCompany, setSelectedCompany] = useState<AdObject | null>(null);
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+  const [selectedBanners, setSelectedBanners] = useState<string[]>([]);
   //const cerrentUser = localStorage.getItem('username') || '';
 
 
@@ -102,6 +107,8 @@ const handleSelectCompany = (company: AdObject) => {
     ...company,
     banners: companyBanners
   });
+  setEditMode(false);
+  setSelectedBanners([]);
 };
 
 
@@ -120,6 +127,7 @@ const handleSelectCompany = (company: AdObject) => {
   };
 
   const handleEditBanner = (banner: Banner) => {
+    if (editMode) return;
     navigate(`/edit-banner/${banner.id}`, {
       state: {
         company: selectedCompany,
@@ -128,6 +136,84 @@ const handleSelectCompany = (company: AdObject) => {
     });
   };
 
+  const handleToggleSelectBanner = (bannerId: string) =>{
+    setSelectedBanners(prev =>
+      prev.includes(bannerId)
+      ? prev.filter(id => id !== bannerId)
+      : [...prev, bannerId]
+    );
+  };
+
+  const handleDeleteSelectedBanners = async () => {
+    if (selectedBanners.length === 0) return;
+    
+    try {
+      await Promise.all(
+        selectedBanners.map(bannerId => 
+          axios.delete(`http://localhost:3000/api/banners/${bannerId}`, {
+            withCredentials: true
+          })
+        )
+      );
+      
+      setBanners(prev => prev.filter(b => !selectedBanners.includes(b.id)));
+      
+      setSelectedCompany(prev => {
+        if (!prev) return null;
+        
+        return {
+          ...prev,
+          banners: prev.banners?.filter(b => !selectedBanners.includes(b.id)) || []
+        };
+      });
+      
+      setSelectedBanners([]);
+      setEditMode(false);
+      
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Ошибка при удалении баннеров');
+    }
+  };
+
+
+  const handleToggleBannersActivation = async (isActive: boolean) => {
+    try {
+        await axios.post('http://localhost:3000/api/toggle-banners', {
+            bannerIds: selectedBanners,
+            isActive
+        }, {
+            withCredentials: true
+        });
+        
+        setSelectedCompany(prev => {
+            if (!prev) return null;
+            
+            return {
+                ...prev,
+                banners: prev.banners?.map(banner => 
+                    selectedBanners.includes(banner.id)
+                        ? { ...banner, isActive }
+                        : banner
+                ) || []
+            };
+        });
+        
+        setSelectedBanners([]);
+        setEditMode(false);
+        alert(`Баннеры успешно ${isActive ? 'активированы' : 'деактивированы'}`);
+    } catch (error) {
+        console.error('Activation error:', error);
+        alert('Ошибка при изменении статуса баннеров');
+    }
+};
+
+  const handleToggleEditMode = () => {
+    setEditMode(!editMode);
+    if (editMode) {
+      setSelectedBanners([]);
+    }
+  };
 
   const Header = ({ title }: { title: string }) => {
     const handleLogout = async () => {
@@ -137,13 +223,13 @@ const handleSelectCompany = (company: AdObject) => {
         });
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('username');
-        navigate('/autorization');
+        navigate('/autorisation');
         window.location.reload();
       } catch (error) {
         console.error('Ошибка при выходе:', error);
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('username');
-        navigate('/autorization');
+        navigate('/autorisation');
         //window.location.reload();
       }
     };
@@ -184,45 +270,104 @@ const handleSelectCompany = (company: AdObject) => {
                   className="company-logo-large"
                 />
                 <h2 className="company-name-large">{selectedCompany.companyName}</h2>
+
+                {editMode ? '' :<button
+                  className="change-btn"
+                  onClick={handleToggleEditMode}
+                >Изменить</button>}
               </div>
               
+              
               <div className="banners-grid">
-                {selectedCompany.banners?.map((banner, index) => (
-                  <div
-                    key={banner.id}
-                    className="banner-card"
-                    onClick={() => handleEditBanner(banner)}
+                {selectedCompany.banners?.map((banner) => (
+                  <div 
+                    key={banner.id} 
+                    className={`banner-row ${editMode ? 'edit-mode' : ''}`}
+                    onClick={() => !editMode && handleEditBanner(banner)}
                   >
-                    <div className="banner-info">
-                      <h3>
-                        Рекламный объект {index + 1}
-                      </h3>
-                      <p className="banner-date">
-                        Создан: {new Date(banner.timestamp).toLocaleDateString()}
-                      </p>
+                    {editMode && (
+                      <label className="banner-checkbox-container">
+                        <input
+                          type="checkbox"
+                          checked={selectedBanners.includes(banner.id)}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            handleToggleSelectBanner(banner.id);
+                          }}
+                        />
+                        <span className="banner-checkmark"></span>
+                      </label>
+                    )}
+                    <div className="banner-card">
+                      <div className="banner-info">
+                        <div className="title-container">
+                          <p className="ObjName">
+                            {banner.bannerName || `Баннер ${banner.id.slice(0, 4)}`}
+                          </p>
+                          <p className="arrow">&gt;</p>
+                        </div>
+                        <div className="bott-container">
+                          <p className="Period">Период публикации: {banner.period || 'значение не задано'}
+                          </p>
+                          <p className="onActive">
+                            {banner.isActive ? <p className="Active">Активный</p> : <p className="noActive">Неактивный</p>}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-              
+
               <div className="action-buttons">
-                <button onClick={handleGoBack} className="back-btn">
-                  Назад
-                </button>
-                <button 
-                  onClick={handleCreateNewBanner} 
-                  className="create-btn"
-                >
-                  Добавить баннер
-                </button>
+                {editMode ? (
+                  <>
+                    <button onClick={handleToggleEditMode} className="back-btn">
+                      Отмена
+                    </button>
+                    <button 
+                      onClick={() => handleToggleBannersActivation(true)} 
+                      className="activate-btn"
+                      disabled={selectedBanners.length === 0}
+                    >
+                      Активировать выбранные ({selectedBanners.length})
+                    </button>
+                    <button 
+                      onClick={() => handleToggleBannersActivation(false)} 
+                      className="deactivate-btn"
+                      disabled={selectedBanners.length === 0}
+                    >
+                      Деактивировать выбранные ({selectedBanners.length})
+                    </button>
+                    <button 
+                      onClick={handleDeleteSelectedBanners} 
+                      className="create-btn"
+                      disabled={selectedBanners.length === 0}
+                    >
+                      Удалить выбранные ({selectedBanners.length})
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={handleGoBack} className="back-btn">
+                      Назад
+                    </button>
+                    <button 
+                      onClick={handleCreateNewBanner} 
+                      className="create-btn"
+                    >
+                      Добавить баннер
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </>
         ) : (
           <>
-            <Header title="Рекламные объекты"/>
+            <Header title="Рекламодатели"/>
             <div className="content-container">
-              <h2 className="section-title">Добавленные рекламные объекты</h2>
+              <h2 className="section-title">Список рекламодателей</h2>
               
               <div className="companies-conteiner">
                 {adObjects.map(company => {

@@ -1,6 +1,5 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from './api';
 import axios from 'axios'; 
 import "./Register.css"
 import logo from "./img/logocomp.png"
@@ -11,50 +10,48 @@ const Register: React.FC = () => {
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
 
-
-
-    
-      
-      const handleRegister = async (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-    
-        try {
-            await api.post('/register', 
-                { username, password },
-                { withCredentials: true }
-            );
-    
-            localStorage.setItem('username', username);
-            localStorage.setItem('isAuthenticated', 'true');
-            navigate('/create-banner');
-        } catch (err) {
+        setError('');
 
-            if (axios.isAxiosError(err)) {
-                console.error('Axios error:', {
-                    message: err.message,
-                    code: err.code,
-                    response: err.response?.data
-                });
-                setError('Ошибка регистрации');
-            } else if (err instanceof Error) {
-                console.error('Native error:', err.message);
-                setError(err.message);
+        try {
+            const response = await axios.post('/register', 
+                { username, password },
+                { 
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    }
+                }
+            );
+
+            console.log('Registration response:', response.data);
+
+            if (response.data.status === 'success') {
+                localStorage.setItem('username', username);
+                localStorage.setItem('isAuthenticated', 'true');
+                console.log('Redirecting to /ad-objects'); 
+                navigate('/ad-objects');
+            }
+        } catch (error) {
+            console.error('Registration error:', error);
+            if (axios.isAxiosError(error)) {
+                setError(error.response?.data?.message || 'Ошибка регистрации');
             } else {
-                console.error('Unexpected error:', err);
                 setError('Неизвестная ошибка');
             }
         }
     };
 
     const handleLoginRedirect = () => {
-        navigate('/autorization');
+        navigate('/autorisation');
     };
-
 
     const Header = () => {
         return (
             <div className="logo">
-                <img src={logo} alt=""/>
+                <img src={logo} alt="Логотип"/>
             </div>
         );
     };
@@ -74,7 +71,6 @@ const Register: React.FC = () => {
                                 value={username} 
                                 onChange={(e) => setUsername(e.target.value)} 
                                 required
-                                
                             />
                         </div>
                         <div className='Password'>
@@ -90,7 +86,7 @@ const Register: React.FC = () => {
                         <div className='EmptyHeight'></div>
                         <div className='Zareg'>
                             <button className='btnzar' type="submit">
-                                Войти
+                                Зарегистрироваться
                             </button>
                             <button className='btnauth'
                                 type="button" 

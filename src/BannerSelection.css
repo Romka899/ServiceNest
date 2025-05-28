@@ -35,7 +35,7 @@
     flex-direction: column;
     background-color: #FFFFFF;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     padding: 20px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -105,7 +105,7 @@
 .banner-card {
     background-color: #FFFFFF;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     padding: 15px;
     max-width: 1046px;
     height: 128px;
@@ -114,7 +114,7 @@
 }
 
 .banner-card:hover {
-    transform: translateY(-3px);
+    background-color: #E6E8F0;
 }
 
 .banner-image-placeholder {
@@ -143,6 +143,49 @@
     color: #666;
 }
 
+.title-container {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
+  }
+
+.ObjName{
+    font-size: 24px;
+}
+
+
+
+.bott-container{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
+}
+
+.Period{
+
+    margin-top: 30px;
+    font-size: 18px;
+    color: #505F8D;
+
+}
+
+.onActive{
+    font-size: 18px;
+    margin-top: 30px;
+
+}
+
+.Active {
+
+    color: #319D34;
+}
+
+.noActive {
+
+    color: #B8BFC8;
+}
 /*------------------------------*/
 .content-container {
     flex: 1;
@@ -162,7 +205,8 @@
     margin-top: 30px;
 }
 
-.create-btn, .back-btn {
+.create-btn, .back-btn, .change-btn, .activate-btn, .deactivate-btn {
+    max-height: 46px ;
     padding: 12px 24px;
     border: none;
     border-radius: 5px;
@@ -170,6 +214,7 @@
     cursor: pointer;
     transition: background-color 0.2s;
     border-style: solid;
+    border-width: 2px;
     border-color:#084F85;;
 }
 
@@ -188,7 +233,17 @@
 }
 
 .back-btn:hover {
-    background-color: #8b8b8b;
+    background-color: #b1b1b1;
+}
+
+.change-btn{
+    margin-left: auto;
+    color: #084F85;
+    background-color: white;
+}
+
+.change-btn:hover {
+    background-color: #b1b1b1;
 }
 
 .app-header {
@@ -235,4 +290,88 @@
 
   .logout-btn:hover {
     background: #babcbf;
+}   
+
+
+.banner-row {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+
+.banner-checkbox-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-left: 10px;
 }
+  
+  .banner-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .banner-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 32px;
+    width: 32px;
+    background-color: white;
+    border: 2px solid #084F85;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+  
+  .banner-checkbox-container:hover input ~ .banner-checkmark {
+    background-color: #E6E8F0;
+  }
+  
+  .banner-checkbox-container input:checked ~ .banner-checkmark {
+    background-color: #084F85;
+  }
+  
+  .banner-checkmark:after {
+    position: absolute;
+    display: none;
+  }
+  
+  .banner-checkbox-container input:checked ~ .banner-checkmark:after {
+    display: block;
+  }
+  
+  .banner-checkbox-container .banner-checkmark:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+
+  .banner-card {
+    flex-grow: 1;
+  }
+  
+  
+  .create-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .create-btn:disabled:hover {
+    background-color: #cccccc;
+  }

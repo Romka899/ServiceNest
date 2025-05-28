@@ -1,15 +1,17 @@
 
 .zagolovok2{
-    max-width: 360px;
+    display: flex;
+    max-width: auto;
     max-height: 72px;
     margin-top: 167px;
     margin-left: 140px;
+    margin-right: 140px;
     font: 'SF Pro Display';
     font-weight: 700;
     font-size: 28px;
     line-height: 36px;
     letter-spacing: 0.2px;
-    text-align: center;
+    justify-content: center;
     padding: 0 20px;
     color: #2D334C;
 }
@@ -28,8 +30,7 @@
 }
 
 .btnzar2{
-    min-width: 174px;
-    min-height: 56px;
+    margin-top: 15px;
     font: 'SF Pro Display';
     font-size: 16px;
     line-height: 22px;
@@ -64,3 +65,16 @@
 
 
 
+
+.inp1, .inp2 {
+    
+    width: 100%;
+    min-height: 48px;
+    font: 'SF Pro Display';
+    font-size: 18px;
+    line-height: 22px;
+    box-sizing: border-box;
+    border-color: #ECEDF4;
+    border-radius: 8px;
+    padding: 1em;
+}

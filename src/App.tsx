@@ -26,7 +26,7 @@ const AppContent: React.FC = () => {
         <div className="app">
             <Routes>
                 <Route path="/" element={<Register />} />
-                <Route path="/autorization" element={<Autorisation />} />
+                <Route path="/autorisation" element={<Autorisation />} />
                 <Route path='/ad-objects' element= {<BannerSelection />} />
                 <Route path="/create-banner" element={<CreateBanner />} />
                 <Route path="/create-banner/:companyId" element={<CreateBanner />} />

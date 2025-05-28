@@ -12,7 +12,7 @@ const SessionChecker = () => {
                 await api.get('/check-session');
             } catch (error) {
                 localStorage.clear();
-                navigate('/autorization');
+                navigate('/autorisation');
                 window.location.reload()
             }
         };
@@ -30,7 +30,7 @@ const SessionChecker = () => {
                 await api.get('/check-session');
             } catch (error) {
                 localStorage.clear();
-                navigate('/autorization');
+                navigate('/autorisation');
             }
         };
         checkAuth();

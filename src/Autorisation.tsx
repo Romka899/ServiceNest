@@ -33,7 +33,7 @@ const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      const response = await axios.post('http://localhost:3000/api/authorization', 
+      const response = await axios.post('http://localhost:3000/api/authorisation', 
         { username, password },
         {
           withCredentials: true,
@@ -63,10 +63,11 @@ const handleLogin = async (e: React.FormEvent) => {
     }
   };
 
+  /*
     const handleRegistrRedirect = () => {
         navigate('/');
     };
-
+*/
     const Header = () => {
         return (
             <div className="logo">
@@ -85,6 +86,7 @@ const handleLogin = async (e: React.FormEvent) => {
                     <label className='log'>Номер телефона пользователя:</label>
                     <input 
                         className='inp1' 
+                        placeholder='Введите номер телефона'
                         type="text" 
                         value={username} 
                         onChange={(e) => setUsername(e.target.value)} 
@@ -95,6 +97,7 @@ const handleLogin = async (e: React.FormEvent) => {
                     <label className='pass'>Пароль:</label>
                     <input
                         className='inp2'
+                        placeholder='Введите пароль'
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -113,7 +116,7 @@ const handleLogin = async (e: React.FormEvent) => {
                         </div>
                 <div className='Zareg'>
                     <button className='btnauth2' type="submit">Войти</button>
-                    <button className='btnzar2' type='button' onClick={handleRegistrRedirect} >Зарегистрироваться</button>
+                    <a className="btnzar2"href = "http://localhost:3001/" >Забыл пароль</a>
                 </div>
                     {error && <div className='Error' style={{color: 'red' }}>{error}</div>}
 

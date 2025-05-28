@@ -17,6 +17,8 @@ const CreateBanner: React.FC = () => {
     const {company} = location.state || {};
     const {bannerData} = location.state || {};
 
+    const [bannerName, setBannerName] = useState(bannerData?.bannerName || '');
+
     const [selectedCompany] = useState(company?.companyName || '');
     const [selectedCompanyId] = useState(company?.id?.toString() || '');
     const [placement, setPlacement] = useState(bannerData?.placement || '');
@@ -46,7 +48,7 @@ const CreateBanner: React.FC = () => {
         setImages(newImages);
     };
 
-
+/*
 const handleLogout = async () => {
   try {
     await axios.post('http://localhost:3000/api/logout', {}, {
@@ -54,17 +56,17 @@ const handleLogout = async () => {
     });
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('username');
-    navigate('/autorization');
+    navigate('/autorisation');
     window.location.reload();
   } catch (error) {
     console.error('Ошибка при выходе:', error);
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('username');
-    navigate('/autorization');
+    navigate('/autorisation');
     //window.location.reload();
   }
 };
-
+*/
     const handleBack = () => {
         navigate('/ad-objects');
     }
@@ -75,6 +77,7 @@ const handleLogout = async () => {
         try {
             const formData = new FormData();
             
+            formData.append('bannerName', bannerName || '');
             formData.append('companyId', String(selectedCompanyId) || '');
             formData.append('companyName', selectedCompany || '');
             formData.append('placement', placement);
@@ -105,7 +108,7 @@ const handleLogout = async () => {
             if (axios.isAxiosError(error)) {
               if (error.response?.status === 401) {
                 localStorage.removeItem('isAuthenticated');
-                window.location.href = '/autorization';
+                window.location.href = '/autorisation';
               } else {
                 alert(error.response?.data?.message || 'Ошибка сохранения');
               }
@@ -115,7 +118,36 @@ const handleLogout = async () => {
           }
         };
 
-
+        const getFormattedDate = (daysToAdd: number): string => {
+            const today = new Date();
+            const endDate = new Date();
+            endDate.setDate(today.getDate() + daysToAdd);
+            
+            return `${formatDate(today)} - ${formatDate(endDate)}`;
+          };
+          
+          const getDateRangeString = (daysToAdd: number): string => {
+            const today = new Date();
+            const endDate = new Date();
+            endDate.setDate(today.getDate() + daysToAdd);
+            
+            return `${formatDate(today, true)} — ${formatDate(endDate, true)}`;
+          };
+          
+          const formatDate = (date: Date, short = false): string => {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            if (short) {
+              return `${day}.${month}.${year}`;
+            }
+            
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            
+            return `${day}.${month}.${year} ${hours}:${minutes}`;
+          };
 
     const Header = () => {
         const handleLogout = async () => {
@@ -125,17 +157,20 @@ const handleLogout = async () => {
             });
             localStorage.removeItem('isAuthenticated');
             localStorage.removeItem('username');
-            navigate('/autorization');
+            navigate('/autorisation');
             window.location.reload();
           } catch (error) {
             console.error('Ошибка при выходе:', error);
             localStorage.removeItem('isAuthenticated');
             localStorage.removeItem('username');
-            navigate('/autorization');
+            navigate('/autorisation');
             //window.location.reload();
           }
         };
       
+
+
+
         return (
           <header className="app-header">
             <div className="header-content">
@@ -164,6 +199,19 @@ const handleLogout = async () => {
                 
                 <div className="content-container">
                     <h1 className="page-title">Добавление рекламных объектов</h1>
+                    <div className="settings-block">
+                    <h2>Название рекламного объекта</h2>
+                        <div className="form-group">
+                            <label>Название баннера:</label>
+                            <input
+                                type="text"
+                                value={bannerName}
+                                onChange={(e) => setBannerName(e.target.value)}
+                                placeholder="Введите название"
+                                className="form-control"
+                            />
+                        </div>
+                    </div>
                     <div className="settings-block">
                         <h2>Детали размещения</h2>
                         <div className="form-group">
@@ -212,7 +260,7 @@ const handleLogout = async () => {
                             {images.length < 5 && (
                                 <label className="upload-btn">
                                     <img src={addpic} alt=''></img>
-                                    Добавить изображение
+                                    <text className='Dob'>Добавить изображение</text>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -256,17 +304,23 @@ const handleLogout = async () => {
                         <h2>Дополнительные настройки</h2>
                         
                         <div className="form-group">
-                            <label>Период публикации:</label>
-                            <select 
-                                value={period} 
-                                onChange={(e) => setPeriod(e.target.value)}
-                                className="form-control"
-                            >
-                                <option value="">Выберите период</option>
-                                <option value="1week">1 неделя</option>
-                                <option value="2weeks">2 недели</option>
-                                <option value="1month">1 месяц</option>
-                            </select>
+                        <label>Период публикации:</label>
+                        <select 
+                            value={period} 
+                            onChange={(e) => setPeriod(e.target.value)}
+                            className="form-control"
+                        >
+                            <option value="">Выберите период</option>
+                            <option value={`${getFormattedDate(7)}`}>
+                            {getDateRangeString(7)} (1 неделя)
+                            </option>
+                            <option value={`${getFormattedDate(14)}`}>
+                            {getDateRangeString(14)} (2 недели)
+                            </option>
+                            <option value={`${getFormattedDate(30)}`}>
+                            {getDateRangeString(30)} (1 месяц)
+                            </option>
+                        </select>
                         </div>
                         
                         <div className="form-group">
@@ -277,9 +331,9 @@ const handleLogout = async () => {
                                 className="form-control"
                             >
                                 <option value="">Выберите количество</option>
-                                <option value="1000">1,000</option>
-                                <option value="5000">5,000</option>
-                                <option value="10000">10,000</option>
+                                <option value="1000">1 000</option>
+                                <option value="5000">5 000</option>
+                                <option value="10000">10 000</option>
                             </select>
                         </div>
                         
@@ -305,9 +359,9 @@ const handleLogout = async () => {
                                 className="form-control"
                             >
                                 <option value="">Выберите время</option>
-                                <option value="day">Только днем</option>
-                                <option value="night">Только ночью</option>
-                                <option value="all">Круглосуточно</option>
+                                <option value="12:00 - 00:00">Только днем</option>
+                                <option value="00:00 - 12:00">Только ночью</option>
+                                <option value="00:00 - 00:00">Круглосуточно</option>
                             </select>
                         </div>
                         
@@ -328,17 +382,12 @@ const handleLogout = async () => {
                     </div>
                     
                     <div className="action-buttons">
-                        <button
-                            onClick={handleLogout} 
-                            className="logout-btn2"
-                        >
-                            Выйти
-                        </button>
+
                         <button
                             onClick={handleBack}
                             className="back-btn2"
                         >
-                            Назад к рекламным объектам
+                            Назад
                         </button>
                         <button 
                             onClick={handleSubmit} 
