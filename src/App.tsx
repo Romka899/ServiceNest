@@ -1,12 +1,13 @@
 import './App.css';
 import "./Register.css"
-import "./CreateBanner.css"
+import "./BannerForm.css"
 import React/*, {useEffect}*/ from 'react';
-import { BrowserRouter as Router, Routes, Route/*, useNavigate*/ } from 'react-router-dom';
-import Register from './Register';
-import CreateBanner from './CreateBanner';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+//import Register from './Register';
+import BannerForm from './BannerForm';
 import Autorisation from './Autorisation';
 import BannerSelection from './BannerSelection';
+
 
 
 const AppContent: React.FC = () => {
@@ -22,15 +23,24 @@ const AppContent: React.FC = () => {
         }
     }, [navigate]);
 */
+
+
+
     return (
         <div className="app">
             <Routes>
-                <Route path="/" element={<Register />} />
+                <Route path="/" element={<Autorisation />} />
                 <Route path="/autorisation" element={<Autorisation />} />
                 <Route path='/ad-objects' element= {<BannerSelection />} />
-                <Route path="/create-banner" element={<CreateBanner />} />
-                <Route path="/create-banner/:companyId" element={<CreateBanner />} />
-                <Route path="/edit-banner/:bannerId" element={<CreateBanner />} />
+
+                    <Route path="/create-banner/:companyId" element={
+                        <BannerForm mode="create" />
+                    } />
+                    
+                    <Route path="/edit-banner/:bannerId" element={
+                        <BannerForm mode="edit" />
+                    } />
+                <Route path="*" element={<Navigate to="/ad-objects" replace />} />
             </Routes>
         </div>
     );

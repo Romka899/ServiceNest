@@ -83,7 +83,7 @@ const handleLogin = async (e: React.FormEvent) => {
             <h1 className='zagolovok2'>Авторизация</h1>
             <form onSubmit={handleLogin}>
                 <div className='Login'>
-                    <label className='log'>Номер телефона пользователя:</label>
+                    <label className='log'>Имя пользователя:</label>
                     <input 
                         className='inp1' 
                         placeholder='Введите номер телефона'
@@ -116,7 +116,7 @@ const handleLogin = async (e: React.FormEvent) => {
                         </div>
                 <div className='Zareg'>
                     <button className='btnauth2' type="submit">Войти</button>
-                    <a className="btnzar2"href = "http://localhost:3001/" >Забыл пароль</a>
+
                 </div>
                     {error && <div className='Error' style={{color: 'red' }}>{error}</div>}
 

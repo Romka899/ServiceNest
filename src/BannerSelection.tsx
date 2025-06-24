@@ -8,6 +8,7 @@ import YA from './img/YAlogo.png';
 import BB from './img/BBlogo.png';
 import OZ from './img/OZlogo.png';
 import Ex from './img/ExitIcon.png';
+import PB from './img/pocketbank.jpg';
 
 
 type Banner = {
@@ -68,6 +69,11 @@ const BannerSelection: React.FC = () => {
       companyLogo: OZ,
       companyName: 'OZON',
 
+    },
+    {
+      id: 5,
+      companyLogo: PB,
+      companyName: 'PocketBank',
     }
   ];
 
@@ -172,7 +178,7 @@ const handleSelectCompany = (company: AdObject) => {
       
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Ошибка при удалении баннеров');
+      //alert('Ошибка при удалении баннеров');
     }
   };
 
@@ -201,10 +207,10 @@ const handleSelectCompany = (company: AdObject) => {
         
         setSelectedBanners([]);
         setEditMode(false);
-        alert(`Баннеры успешно ${isActive ? 'активированы' : 'деактивированы'}`);
+        //alert(`Баннеры успешно ${isActive ? 'активированы' : 'деактивированы'}`);
     } catch (error) {
         console.error('Activation error:', error);
-        alert('Ошибка при изменении статуса баннеров');
+        //alert('Ошибка при изменении статуса баннеров');
     }
 };
 
@@ -279,7 +285,7 @@ const handleSelectCompany = (company: AdObject) => {
               
               
               <div className="banners-grid">
-                {selectedCompany.banners?.map((banner) => (
+                {selectedCompany.banners?.filter(b => b?.id).map((banner) => (
                   <div 
                     key={banner.id} 
                     className={`banner-row ${editMode ? 'edit-mode' : ''}`}
@@ -302,15 +308,18 @@ const handleSelectCompany = (company: AdObject) => {
                       <div className="banner-info">
                         <div className="title-container">
                           <p className="ObjName">
-                            {banner.bannerName || `Баннер ${banner.id.slice(0, 4)}`}
+                            {banner.bannerName || `Баннер ${banner.id?.slice(0, 4) || 'N/A'}`}
                           </p>
                           <p className="arrow">&gt;</p>
                         </div>
                         <div className="bott-container">
-                          <p className="Period">Период публикации: {banner.period || 'значение не задано'}
+                          <p className="Period">
+                            Период публикации: {banner.period || 'значение не задано'}
                           </p>
                           <p className="onActive">
-                            {banner.isActive ? <p className="Active">Активный</p> : <p className="noActive">Неактивный</p>}
+                            {banner.isActive ? 
+                              <span className="Active">Активный</span> : 
+                              <span className="noActive">Неактивный</span>}
                           </p>
                         </div>
                       </div>
