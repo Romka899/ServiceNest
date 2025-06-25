@@ -342,8 +342,7 @@
 .custom-datepicker-container {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 0;
   }
   
  
@@ -358,6 +357,7 @@
     text-align: center;
     transition: all 0.2s;
     color: #333;
+    
   }
   
   .datepicker-input-button:hover {
@@ -367,6 +367,7 @@
   .date-range-separator {
     color: #666;
     font-size: 16px;
+    margin: 0 5px;
   }
   
  
@@ -380,7 +381,44 @@
   }
 
   .react-datepicker__time-container {
-    display: none !important;
+    width: 300px;
+  }
+  
+  .react-datepicker__time-box {
+    width: 100% !important;
+  }
+  
+  .react-datepicker__time-list {
+    width: 200px;
+    padding: 0;
+  }
+
+  
+  .react-datepicker__time-list-item {
+    padding: 5px 10px;
+    text-align: center;
+  }
+  
+  .react-datepicker__time-list-item--selected {
+    background-color: #084F85;
+    color: white;
+  }
+  
+  .time-picker-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .time-picker-section {
+    flex: 1;
+  }
+  
+  .time-picker-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #495057;
   }
   
 
@@ -510,6 +548,7 @@
   .react-datepicker__day--weekend.react-datepicker__day--in-range {
     background-color: #DB1832 !important;
     color: white !important;
+    border-radius: 50% !important;
   }
   
 
