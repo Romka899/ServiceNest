@@ -9,6 +9,7 @@ import BB from './img/BBlogo.png';
 import OZ from './img/OZlogo.png';
 import Ex from './img/ExitIcon.png';
 import PB from './img/pocketbank.jpg';
+import moment from 'moment-timezone';
 
 
 type Banner = {
@@ -24,7 +25,7 @@ type Banner = {
   companyName: string;
   showTime: string;
   period: string;
-  isActive?: boolean;
+  isActive: boolean;
 };
 
 
@@ -117,6 +118,24 @@ const handleSelectCompany = (company: AdObject) => {
   setSelectedBanners([]);
 };
 
+
+const calculateIsActive = (banner: Banner): boolean => {
+  if (!banner.period) return false;
+  
+  try {
+    const [startStr, endStr] = banner.period.split(' — ');
+    
+    const startDate = moment(startStr, 'D MMMM YYYY HH:mm');
+    const endDate = moment(endStr, 'D MMMM YYYY HH:mm');
+    
+    if (!startDate.isValid() || !endDate.isValid()) return false;
+    
+    return moment().isBetween(startDate, endDate);
+  } catch (e) {
+    console.error('Error parsing banner period:', e);
+    return false;
+  }
+};
 
   const handleCreateNewBanner = () => {
     if (selectedCompany) {
@@ -317,7 +336,7 @@ const handleSelectCompany = (company: AdObject) => {
                             Период публикации: {banner.period || 'значение не задано'}
                           </p>
                           <p className="onActive">
-                            {banner.isActive ? 
+                            {calculateIsActive(banner) ?
                               <span className="Active">Активный</span> : 
                               <span className="noActive">Неактивный</span>}
                           </p>

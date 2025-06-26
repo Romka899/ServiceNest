@@ -10,6 +10,8 @@ import Ex from "./img/ExitIcon.png";
 import {ru} from 'date-fns/locale';
 import { registerLocale } from 'react-datepicker';
 import Select from 'react-select';
+import moment from 'moment-timezone';
+
 
 registerLocale('ru', ru);
 
@@ -79,6 +81,8 @@ const BannerForm: React.FC<BannerFormProps> = ({mode}) => {
       setEndDate(date);
     };
 
+
+    /*
     const formatDateDisplay = (date: Date | null): string => {
       if (!date) return 'Выберите дату';
       return date.toLocaleDateString('ru-RU', {
@@ -87,7 +91,8 @@ const BannerForm: React.FC<BannerFormProps> = ({mode}) => {
         year: 'numeric'
       });
     };
-
+*/
+    /*
     const formatTimeDisplay = (date: Date | null): string => {
       if (!date) return '00:00';
       return date.toLocaleTimeString('ru-RU', {
@@ -96,6 +101,8 @@ const BannerForm: React.FC<BannerFormProps> = ({mode}) => {
         hour12: false
       }).replace(/^24:/, '00:');
     };
+
+    */
 
     const removeImage = (index: number) => {
         const newImages = [...images];
@@ -122,8 +129,14 @@ const BannerForm: React.FC<BannerFormProps> = ({mode}) => {
             return;
           }
     
+          const timezone = 'Asia/Yekaterinburg'
+
+
+          const startDateMoment = moment(startDate).tz(timezone);
+          const endDateMoment = moment(endDate).tz(timezone);
+
           const period = startDate && endDate 
-            ? `${formatDateDisplay(startDate)} — ${formatDateDisplay(endDate)}`
+            ? `${startDateMoment.format('DD MMMM YYYY HH:mm')} — ${endDateMoment.format('DD MMMM YYYY HH:mm')}`
             : '';
 
 
@@ -137,16 +150,22 @@ const BannerForm: React.FC<BannerFormProps> = ({mode}) => {
             link,
             impressions,
             userImpressions,
-            startTime: formatTimeDisplay(startDate),
-            endTime: formatTimeDisplay(endDate),
+            startTime: startDateMoment.format('HH:mm'),
+            endTime: endDateMoment.format('HH:mm'),
             geoTargeting,
             username: localStorage.getItem('username') || 'unknown',
-            startDate: startDate?.toISOString() || '',
-            endDate: endDate?.toISOString() || '',
+            startDate: startDate ? moment(startDate).format('YYYY-MM-DDTHH:mm:ss') : null,
+            endDate: endDate ? moment(endDate).format('YYYY-MM-DDTHH:mm:ss') : null,
             period: period,
-            isActive: String(startDate && endDate
-              ? new Date() >= startDate && new Date() <= endDate
-              : false)
+            timezone: timezone,
+            isActive: startDate && endDate
+              ? moment()
+              .tz(timezone) 
+              .isBetween(
+                moment(startDate).tz(timezone), 
+                moment(endDate).tz(timezone)    
+              ) 
+          : false
           };
 
           Object.entries(formFields).forEach(([key, value]) => {
@@ -487,48 +506,174 @@ const BannerForm: React.FC<BannerFormProps> = ({mode}) => {
                       <div className='form-group'>
                         <label>Период публикации: </label>
                         <div className='custom-datepicker-container'>
+                          <div className="date-time-picker">
                             <DatePicker
                               selected={startDate}
                               onChange={handleStartDateChange}
                               selectsStart
                               startDate={startDate}
                               endDate={endDate}
-                              showTimeSelect
-                              timeFormat="HH:mm"
-                              timeIntervals={15}
                               dateFormat="dd.MM.yyyy HH:mm"
                               locale="ru"
-                              timeCaption="Время"
                               className="form-control"
                               calendarClassName="custom-calendar-popup"
+                              popperClassName="custom-popper"
+                              renderCustomHeader={({
+                                date,
+                                decreaseMonth,
+                                increaseMonth,
+                                prevMonthButtonDisabled,
+                                nextMonthButtonDisabled,
+                              }) => (
+                                <div className="custom-header">
+                                  <div className="header-navigation">
+                                    <button
+                                      onClick={decreaseMonth}
+                                      disabled={prevMonthButtonDisabled}
+                                      className="nav-button"
+                                    >
+                                      &lt;
+                                    </button>
+                                    <span className="month-year">
+                                      {date.toLocaleString('ru', { month: 'long', year: 'numeric' })}
+                                    </span>
+                                    <button
+                                      onClick={increaseMonth}
+                                      disabled={nextMonthButtonDisabled}
+                                      className="nav-button"
+                                    >
+                                      &gt;
+                                    </button>
+                                  </div>
+                                  
+                                  <div className="time-input-group">
+                                    <div className="time-input-hour">
+                                      <label>Часы:</label>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        max="23"
+                                        value={startDate?.getHours() || 0}
+                                        onChange={(e) => {
+                                          const hours = Math.min(23, Math.max(0, parseInt(e.target.value) || 0));
+                                          const newDate = new Date(startDate || new Date());
+                                          newDate.setHours(hours);
+                                          setStartDate(newDate);
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="time-input-minutes">
+                                      <label>Минуты:</label>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        max="55"
+                                        step="5"
+                                        value={startDate?.getMinutes() || 0}
+                                        onChange={(e) => {
+                                          const minutes = Math.min(55, Math.max(0, parseInt(e.target.value) || 0));
+                                          const newDate = new Date(startDate || new Date());
+                                          newDate.setMinutes(minutes);
+                                          setStartDate(newDate);
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             />
-                        </div>
-                        <div className="time-picker-section">
+                          </div>
+
+                          <span className='date-range-separator'>—</span>
+
+                          <div className="date-time-picker">
                             <DatePicker
                               selected={endDate}
                               onChange={handleEndDateChange}
                               selectsEnd
                               startDate={startDate}
                               endDate={endDate}
-
-                              showTimeSelect
-                              timeFormat="HH:mm"
-                              timeIntervals={15}
                               dateFormat="dd.MM.yyyy HH:mm"
                               locale="ru"
-                              timeCaption="Время"
                               className="form-control"
                               calendarClassName="custom-calendar-popup"
+                              popperClassName="custom-popper"
+                              renderCustomHeader={({
+                                date,
+                                decreaseMonth,
+                                increaseMonth,
+                                prevMonthButtonDisabled,
+                                nextMonthButtonDisabled,
+                              }) => (
+                                <div className="custom-header">
+                                  <div className="header-navigation">
+                                    <button
+                                      onClick={decreaseMonth}
+                                      disabled={prevMonthButtonDisabled}
+                                      className="nav-button"
+                                    >
+                                      &lt;
+                                    </button>
+                                    <span className="month-year">
+                                      {date.toLocaleString('ru', { month: 'long', year: 'numeric' })}
+                                    </span>
+                                    <button
+                                      onClick={increaseMonth}
+                                      disabled={nextMonthButtonDisabled}
+                                      className="nav-button"
+                                    >
+                                      &gt;
+                                    </button>
+                                  </div>
+                                  
+                                  <div className="time-input-group">
+                                    <div className="time-input-hour">
+                                      <label>Часы:</label>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        max="23"
+                                        value={endDate?.getHours() || 0}
+                                        onChange={(e) => {
+                                          const hours = Math.min(23, Math.max(0, parseInt(e.target.value) || 0));
+                                          const newDate = new Date(endDate || new Date());
+                                          newDate.setHours(hours);
+                                          setEndDate(newDate);
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="time-input-minutes">
+                                      <label>Минуты:</label>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        max="55"
+                                        step="5"
+                                        value={endDate?.getMinutes() || 0}
+                                        onChange={(e) => {
+                                          const minutes = Math.min(55, Math.max(0, parseInt(e.target.value) || 0));
+                                          const newDate = new Date(endDate || new Date());
+                                          newDate.setMinutes(minutes);
+                                          setEndDate(newDate);
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             />
+                          </div>
                         </div>
-                        {startDate && endDateTime && (
+                        {/*
+                        {startDate && endDate && (
                           <div className="period-info">
                             <div className="period-display">
                               Период: {formatDateDisplay(startDate)} {formatTimeDisplay(startDate)} — {formatDateDisplay(endDate)} {formatTimeDisplay(endDate)}
                             </div>
                           </div>
                         )}
-                        </div>
+                        */}
+                      </div>
                         <div className="form-group">
                             <label>Количество показов:</label>
                             <Select
